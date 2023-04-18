@@ -1,39 +1,35 @@
 #include <stdio.h>
 
-typedef unsigned char *byte_pointer;
+void inplace_swap(int *x, int *y){
+    *y = *x ^ *y;
+    *x = *x ^ *y;
+    *y = *x ^ *y;
+}
 
-void show_bytes(byte_pointer start, size_t len)
-{
-    size_t i;
-    for (i = 0; i < len; i++)
-    {
-        printf("%.2x", start[i]);
+void reverse_array(int arr[], int size) {
+    int i;
+    for (i = 0; i < size/2; i++) {
+        inplace_swap(&arr[i], &arr[size-i-1]);
     }
-    printf("\n");
 }
 
-void show_int(int x)
-{
-    show_bytes((byte_pointer)&x, sizeof(int));
-}
+int main() {
+    int arr[] = {1, 2, 3, 4, 5};
+    int size = sizeof(arr)/sizeof(arr[0]);
+    int i;
 
-void show_float(float x)
-{
-    show_bytes((byte_pointer)&x, sizeof(float));
-}
+    printf("Before reverse: ");
+    for (i = 0; i < size; i++) {
+        printf("%d ", arr[i]);
+    }
 
-void show_pointer(void *x)
-{
-    show_bytes((byte_pointer)&x, sizeof(void *));
-}
+    reverse_array(arr, size);
 
-int main()
-{
-    int x = 12345;
-    float f = 3.1415;
-    void *p = &x;
-    show_int(x);
-    show_float(x);
-    show_pointer(p);
+    printf("\nAfter reverse: ");
+    for (i = 0; i < size; i++) {
+        printf("%d ", arr[i]);
+    }
+
     return 0;
 }
+
