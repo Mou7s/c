@@ -1,11 +1,9 @@
 #include <stdio.h>
-
 void inplace_swap(int *x, int *y){
     *y = *x ^ *y;
     *x = *x ^ *y;
     *y = *x ^ *y;
 }
-
 void reverse_array(int arr[], int size) {
     int i;
     for (i = 0; i < size/2; i++) {
@@ -29,7 +27,7 @@ int main() {
     for (i = 0; i < size; i++) {
         printf("%d ", arr[i]);
     }
-
+printf ("\n");
     return 0;
 }
 
