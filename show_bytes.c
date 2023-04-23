@@ -13,32 +13,39 @@ void show_bytes(byte_pointer start, size_t len)
     printf("\n");
 }
 
-
-void show_int (int x){
-    show_bytes((byte_pointer) &x,sizeof(int));
+void show_int(int x)
+{
+    show_bytes((byte_pointer)&x, sizeof(int));
 }
 
-void show_float(float x){
-    show_bytes((byte_pointer) &x, sizeof(float));
+void show_float(float x)
+{
+    show_bytes((byte_pointer)&x, sizeof(float));
 }
 
-void show_pointer(void *x){
-    show_bytes((byte_pointer) &x,sizeof(void *));
+void show_pointer(void *x)
+{
+    show_bytes((byte_pointer)&x, sizeof(void *));
 }
 
-int main() {
-    int x = 12345;
-    float f = 3.14159;
-    int* ptr = &x;
-    
-    printf("x = %d\n", x);
-    show_int(x);
-    
-    printf("f = %f\n", f);
-    show_float(f);
-    
-    printf("ptr = %p\n", ptr);
-    show_pointer(ptr);
-    
-    return 0;
+void test_show_bytes(int val)
+{
+    int ival = val;
+    float fval = (float)ival;
+    int *pval = &ival;
+    show_int(ival);
+    show_float(fval);
+    show_pointer(pval);
 }
+
+int main()
+{
+    int val = 0x87654321;
+    byte_pointer valp = (byte_pointer)&val;
+    show_bytes(valp, 1);
+    show_bytes(valp, 2);
+    show_bytes(valp, 3);
+}
+
+0011 0101 1001 0001 0100 0001
+0100 1010 0101 0110 0100 0101 0100 0000
