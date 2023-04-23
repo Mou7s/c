@@ -1,22 +1,13 @@
 #include <stdio.h>
 
-void func1(void);
+typedef unsigned char *byte_pointer;
 
-static int count = 10;
-
-int main()
+void show_bytes(byte_pointer start, size_t len)
 {
-    while (count --)
+    size_t i;
+    for (i = 0; i < len; i++)
     {
-        func1();
+        printf(" %.2x", start[i]);
     }
-    return 0;
-}
-
-void func1(void)
-{
-
-    static int thingy = 5;
-    thingy++;
-    printf("thingy is %d, count is %d\n", thingy, count);
+    printf("\n");
 }
