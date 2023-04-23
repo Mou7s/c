@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stddef.h>
+#include <string.h>
 
 typedef unsigned char *byte_pointer;
 
@@ -40,12 +41,6 @@ void test_show_bytes(int val)
 
 int main()
 {
-    int val = 0x87654321;
-    byte_pointer valp = (byte_pointer)&val;
-    show_bytes(valp, 1);
-    show_bytes(valp, 2);
-    show_bytes(valp, 3);
+    const char *s = "abcdef";
+    show_bytes((byte_pointer)s, strlen(s));
 }
-
-0011 0101 1001 0001 0100 0001
-0100 1010 0101 0110 0100 0101 0100 0000
