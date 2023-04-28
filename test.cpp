@@ -2,13 +2,22 @@
 using namespace std;
 int main()
 {
-    int i = 0;
-    char a[10] = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'};
-    cout << "first five letters:" << endl;
-    for (int i = 0; i < sizeof(a) / sizeof(a[0]); i++)
-    {
-        cout << a[i] << " ";
-    }
-    cout << endl;
-    return 0;
+	int x, y, z;
+
+	for (x = 0; x <= 33; x++)
+	{
+		for (y = 0; y <= 50; y++)
+		{
+			for (z = 0; z <= 100; z++)
+			{
+				if ((x + y + z) == 100)
+				{
+					if ((3 * x + 2 * y + 0.5 * z) == 100)
+					{
+						cout << x << y << endl;
+					}
+				}
+			}
+		}
+	}
 }
