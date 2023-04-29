@@ -18,8 +18,8 @@ void bubblesort(int arr[], int n)
 
 int main()
 {
-    int n, arr[500]; 
-    scanf("%d", &n);  
+    int n, arr[500];
+    scanf("%d", &n);
     for (int i = 0; i < n; i++)
     {
         scanf("%d", &arr[i]);
