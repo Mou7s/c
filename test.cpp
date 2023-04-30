@@ -2,25 +2,14 @@
 using namespace std;
 int main()
 {
-    int a, min, max;
-    cin >> a;
-    if (a % 2 == 0)
-    {
-        max = a / 2;
-        if (a % 4 == 0)
-        {
-            min = a / 4;
-        }
-        else
-        {
-            min = a / 4;
-        }
-    }
-    else
-    {
-        return false;
-    }
+    int nCase, nFeet;
+    cin >> nCase;
 
-    cout << min << " " << max << endl;
-    return 0;
+for (int i = 0; i < nCase; i++)
+{
+    cin >> nFeet;
+
+}
+
+
 }
