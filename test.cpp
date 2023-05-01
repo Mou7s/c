@@ -5,11 +5,8 @@ int main()
     int nCase, nFeet;
     cin >> nCase;
 
-for (int i = 0; i < nCase; i++)
-{
-    cin >> nFeet;
-
-}
-
-
+    for (int i = 0; i < nCase; i++)
+    {
+        cin >> nFeet;
+    }
 }
