@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 // 定义结构体存储培养皿信息
-struct Dish
+struct PetriDish
 {
     int id;      // 编号
     int before;  // 试验前细菌数量
@@ -10,28 +10,39 @@ struct Dish
     double rate; // 繁殖率
 };
 
-// 按繁殖率升序排序
+// 比较函数，用于排序
 int cmp(const void *a, const void *b)
 {
-    struct Dish *c = (struct Dish *)a;
-    struct Dish *d = (struct Dish *)b;
-    return c->rate > d->rate ? 1 : -1;
+    struct PetriDish *p1 = (struct PetriDish *)a;
+    struct PetriDish *p2 = (struct PetriDish *)b;
+    if (p1->rate < p2->rate)
+    {
+        return -1;
+    }
+    else if (p1->rate > p2->rate)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
 }
 
 int main()
 {
     int n;
     scanf("%d", &n);
-    struct Dish *A = (struct Dish *)malloc(n * sizeof(struct Dish)); // 存储A亚种培养皿信息
-    struct Dish *B = (struct Dish *)malloc(n * sizeof(struct Dish)); // 存储B亚种培养皿信息
-    int cntA = 0, cntB = 0;                                          // 记录A、B亚种培养皿数量
+    struct PetriDish *A = (struct PetriDish *)malloc(n * sizeof(struct PetriDish)); // 存储A亚种的培养皿
+    struct PetriDish *B = (struct PetriDish *)malloc(n * sizeof(struct PetriDish)); // 存储B亚种的培养皿
+    int cntA = 0, cntB = 0;                                                         // 记录A亚种和B亚种的数量
     for (int i = 0; i < n; i++)
     {
         int id, before, after;
         scanf("%d%d%d", &id, &before, &after);
-        double rate = (double)after / before; // 计算繁殖率
+        double rate = (double)after / before;
         if (rate >= 2)
-        { // A亚种
+        { // 繁殖率大于等于2的为A亚种
             A[cntA].id = id;
             A[cntA].before = before;
             A[cntA].after = after;
@@ -39,7 +50,7 @@ int main()
             cntA++;
         }
         else
-        { // B亚种
+        { // 繁殖率小于2的为B亚种
             B[cntB].id = id;
             B[cntB].before = before;
             B[cntB].after = after;
@@ -47,10 +58,8 @@ int main()
             cntB++;
         }
     }
-    // 按繁殖率升序排序
-    qsort(A, cntA, sizeof(struct Dish), cmp);
-    qsort(B, cntB, sizeof(struct Dish), cmp);
-    // 输出结果
+    qsort(A, cntA, sizeof(struct PetriDish), cmp); // 按繁殖率升序排列A亚种的培养皿
+    qsort(B, cntB, sizeof(struct PetriDish), cmp); // 按繁殖率升序排列B亚种的培养皿
     printf("%d\n", cntA);
     for (int i = 0; i < cntA; i++)
     {
