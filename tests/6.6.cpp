@@ -1,12 +1,13 @@
 #include <iostream>
-using namespace std;
+
 int main()
 {
+    using namespace std;
     int num, a, b, c;
     cin >> num;
     c = num % 10;
-    b = (num - a) % 100;
-    a = (num - a - b) % 1000;
+    b = ((num - c) % 100) / 10;
+    a = ((num - c - b) % 1000) / 100;
     cout << a << endl
          << b << endl
          << c << endl;
