@@ -1,38 +1,70 @@
 #include <iostream>
 #include <string>
+#include <vector>
 
 using namespace std;
 
-int naive_match(const string &long_str, const string &target_str)
+void getNext(const string &pattern, vector<int> &next)
 {
-    int m = target_str.length();
-    int n = long_str.length();
-    for (int i = 0; i <= n - m; i++)
+    int n = pattern.size();
+    next[0] = -1;
+    int i = 0, j = -1;
+    while (i < n - 1)
     {
-        int j;
-        for (j = 0; j < m; j++)
+        if (j == -1 || pattern[i] == pattern[j])
         {
-            if (long_str[i + j] != target_str[j])
-                break;
+            ++i;
+            ++j;
+            next[i] = j;
         }
-        if (j == m)
-            return i;
+        else
+        {
+            j = next[j];
+        }
     }
-    return -1;
+}
+
+int kmp(const string &text, const string &pattern)
+{
+    int n = text.size();
+    int m = pattern.size();
+    vector<int> next(m, 0);
+    getNext(pattern, next);
+    int i = 0, j = 0;
+    while (i < n && j < m)
+    {
+        if (j == -1 || text[i] == pattern[j])
+        {
+            ++i;
+            ++j;
+        }
+        else
+        {
+            j = next[j];
+        }
+    }
+    if (j == m)
+    {
+        return i - j;
+    }
+    else
+    {
+        return -1;
+    }
 }
 
 int main()
 {
-    string long_str = "hello world";
-    string target_str = "world";
-    int pos = naive_match(long_str, target_str);
+    string text = "hello world";
+    string pattern = "world";
+    int pos = kmp(text, pattern);
     if (pos != -1)
     {
-        cout << "Target string found at position " << pos << endl;
+        cout << "Found pattern at position " << pos << endl;
     }
     else
     {
-        cout << "Target string not found" << endl;
+        cout << "Pattern not found" << endl;
     }
     return 0;
 }
