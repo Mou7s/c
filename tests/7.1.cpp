@@ -1,29 +1,43 @@
 #include <iostream>
-#include <vector>
+#include <iomanip>
 
 using namespace std;
 
 int main()
 {
-    int n, m;
-    while (cin >> n >> m)
+    int n;
+    cin >> n;
+
+    int age;
+    int counts[4] = {0}; // 使用数组来存储各个年龄段的病人数量
+    for (int i = 0; i < n; i++)
     {
-        if (n == 0 && m == 0)
+        cin >> age;
+        if (age <= 18)
         {
-            break;
+            counts[0]++;
         }
-        vector<int> monkeys(n);
-        for (int i = 0; i < n; i++)
+        else if (age <= 35)
         {
-            monkeys[i] = i + 1;
+            counts[1]++;
         }
-        int current = 0;
-        while (monkeys.size() > 1)
+        else if (age <= 60)
         {
-            current = (current + m - 1) % monkeys.size();
-            monkeys.erase(monkeys.begin() + current);
+            counts[2]++;
         }
-        cout << monkeys[0] << endl;
+        else
+        {
+            counts[3]++;
+        }
     }
+
+    double total = n;                                     // 总人数等于过往病人的数量
+    string labels[4] = {"1-18", "19-35", "36-60", "60-"}; // 使用数组来存储各个年龄段的标签
+    for (int i = 0; i < 4; i++)
+    {
+        double percentage = counts[i] / total * 100;
+        cout << labels[i] << ": " << fixed << setprecision(2) << percentage << "%" << endl;
+    }
+
     return 0;
 }

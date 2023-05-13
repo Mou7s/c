@@ -1,70 +1,43 @@
 #include <iostream>
-#include <string>
-#include <vector>
+#include <iomanip>
 
 using namespace std;
 
-void getNext(const string &pattern, vector<int> &next)
-{
-    int n = pattern.size();
-    next[0] = -1;
-    int i = 0, j = -1;
-    while (i < n - 1)
-    {
-        if (j == -1 || pattern[i] == pattern[j])
-        {
-            ++i;
-            ++j;
-            next[i] = j;
-        }
-        else
-        {
-            j = next[j];
-        }
-    }
-}
-
-int kmp(const string &text, const string &pattern)
-{
-    int n = text.size();
-    int m = pattern.size();
-    vector<int> next(m, 0);
-    getNext(pattern, next);
-    int i = 0, j = 0;
-    while (i < n && j < m)
-    {
-        if (j == -1 || text[i] == pattern[j])
-        {
-            ++i;
-            ++j;
-        }
-        else
-        {
-            j = next[j];
-        }
-    }
-    if (j == m)
-    {
-        return i - j;
-    }
-    else
-    {
-        return -1;
-    }
-}
-
 int main()
 {
-    string text = "hello world";
-    string pattern = "world";
-    int pos = kmp(text, pattern);
-    if (pos != -1)
+    int n;
+    cin >> n;
+
+    int age;
+    int counts[4] = {0}; // 使用数组来存储各个年龄段的病人数量
+    for (int i = 0; i < n; i++)
     {
-        cout << "Found pattern at position " << pos << endl;
+        cin >> age;
+        if (age <= 18)
+        {
+            counts[0]++;
+        }
+        else if (age <= 35)
+        {
+            counts[1]++;
+        }
+        else if (age <= 60)
+        {
+            counts[2]++;
+        }
+        else
+        {
+            counts[3]++;
+        }
     }
-    else
+
+    double total = n;                                     // 总人数等于过往病人的数量
+    string labels[4] = {"1-18", "19-35", "36-60", "60-"}; // 使用数组来存储各个年龄段的标签
+    for (int i = 0; i < 4; i++)
     {
-        cout << "Pattern not found" << endl;
+        double percentage = counts[i] / total * 100;
+        cout << labels[i] << ": " << fixed << setprecision(2) << percentage << "%" << endl;
     }
+
     return 0;
 }
