@@ -1,43 +1,44 @@
 #include <iostream>
-#include <iomanip>
-
 using namespace std;
+
+bool check(int arr[], int row, int col)
+{
+    for (int i = 0; i < row; i++)
+    {
+        if (arr[i] == col || abs(arr[i] - col) == row - i)
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+void dfs(int arr[], int row, int n, int &count)
+{
+    if (row == n)
+    {
+        count++;
+        return;
+    }
+    for (int i = 0; i < n; i++)
+    {
+        if (check(arr, row, i))
+        {
+            arr[row] = i;
+            dfs(arr, row + 1, n, count);
+            arr[row] = 0;
+        }
+    }
+}
 
 int main()
 {
     int n;
+    cout << "请输入皇后数量：";
     cin >> n;
-
-    int age;
-    int counts[4] = {0}; // 使用数组来存储各个年龄段的病人数量
-    for (int i = 0; i < n; i++)
-    {
-        cin >> age;
-        if (age <= 18)
-        {
-            counts[0]++;
-        }
-        else if (age <= 35)
-        {
-            counts[1]++;
-        }
-        else if (age <= 60)
-        {
-            counts[2]++;
-        }
-        else
-        {
-            counts[3]++;
-        }
-    }
-
-    double total = n;                                     // 总人数等于过往病人的数量
-    string labels[4] = {"1-18", "19-35", "36-60", "60-"}; // 使用数组来存储各个年龄段的标签
-    for (int i = 0; i < 4; i++)
-    {
-        double percentage = counts[i] / total * 100;
-        cout << labels[i] << ": " << fixed << setprecision(2) << percentage << "%" << endl;
-    }
-
+    int arr[n] = {0};
+    int count = 0;
+    dfs(arr, 0, n, count);
+    cout << "共有 " << count << " 种放置方法。" << endl;
     return 0;
 }
