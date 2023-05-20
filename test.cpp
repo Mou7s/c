@@ -8,23 +8,23 @@ public:
     virtual void use() = 0;
 };
 
-// 具体产品类 A
-class ConcreteProductA : public Product
+// 具体产品类A
+class ProductA : public Product
 {
 public:
-    void use() override
+    void use()
     {
-        cout << "Using ConcreteProductA" << endl;
+        cout << "ProductA is used." << endl;
     }
 };
 
-// 具体产品类 B
-class ConcreteProductB : public Product
+// 具体产品类B
+class ProductB : public Product
 {
 public:
-    void use() override
+    void use()
     {
-        cout << "Using ConcreteProductB" << endl;
+        cout << "ProductB is used." << endl;
     }
 };
 
@@ -32,27 +32,31 @@ public:
 class Factory
 {
 public:
-    static Product *createProduct(int type)
+    Product *createProduct(int type)
     {
         switch (type)
         {
         case 1:
-            return new ConcreteProductA();
+            return new ProductA();
+            break;
         case 2:
-            return new ConcreteProductB();
+            return new ProductB();
+            break;
         default:
-            return nullptr;
+            return NULL;
         }
     }
 };
 
+// 客户端
 int main()
 {
-    Product *productA = Factory::createProduct(1);
-    Product *productB = Factory::createProduct(2);
+    Factory factory;
+    Product *productA = factory.createProduct(1);
     productA->use();
+
+    Product *productB = factory.createProduct(2);
     productB->use();
-    delete productA;
-    delete productB;
+
     return 0;
 }
