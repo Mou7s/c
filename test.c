@@ -1,44 +1,100 @@
 #include <stdio.h>
 
-int max(int a, int b)
+// 合并两个有序子数组
+void merge(int arr[], int l, int m, int r)
 {
-    return (a > b) ? a : b;
-}
+    int n1 = m - l + 1;
+    int n2 = r - m;
 
-int knapsack(int W, int wt[], int val[], int n)
-{
-    int i, w;
-    int K[n + 1][W + 1];
+    // 创建临时数组
+    int L[n1], R[n2];
 
-    // 初始化数组 K
-    for (i = 0; i <= n; i++)
+    // 将左半部分复制到 L 数组
+    for (int i = 0; i < n1; i++)
     {
-        for (w = 0; w <= W; w++)
-        {
-            if (i == 0 || w == 0)
-            {
-                K[i][w] = 0;
-            }
-            else if (wt[i - 1] <= w)
-            {
-                K[i][w] = max(val[i - 1] + K[i - 1][w - wt[i - 1]], K[i - 1][w]);
-            }
-            else
-            {
-                K[i][w] = K[i - 1][w];
-            }
-        }
+        L[i] = arr[l + i];
     }
 
-    return K[n][W];
+    // 将右半部分复制到 R 数组
+    for (int j = 0; j < n2; j++)
+    {
+        R[j] = arr[m + 1 + j];
+    }
+
+    int i = 0; // 初始化左半部分的索引
+    int j = 0; // 初始化右半部分的索引
+    int k = l; // 初始化合并后的数组的索引
+
+    // 合并左右两个有序序列
+    while (i < n1 && j < n2)
+    {
+        if (L[i] <= R[j])
+        {
+            arr[k] = L[i];
+            i++;
+        }
+        else
+        {
+            arr[k] = R[j];
+            j++;
+        }
+        k++;
+    }
+
+    // 将剩余的元素复制到 arr 数组
+    while (i < n1)
+    {
+        arr[k] = L[i];
+        i++;
+        k++;
+    }
+
+    while (j < n2)
+    {
+        arr[k] = R[j];
+        j++;
+        k++;
+    }
+}
+
+// 归并排序
+void mergeSort(int arr[], int l, int r)
+{
+    if (l < r)
+    {
+        // 找到中间点
+        int m = (l + r) / 2;
+
+        // 递归地排序左半部分
+        mergeSort(arr, l, m);
+
+        // 递归地排序右半部分
+        mergeSort(arr, m + 1, r);
+
+        // 合并左右两个有序序列
+        merge(arr, l, m, r);
+    }
 }
 
 int main()
 {
-    int val[] = {60, 100, 120};
-    int wt[] = {10, 20, 30};
-    int W = 50;
-    int n = sizeof(val) / sizeof(val[0]);
-    printf("Maximum value: %d", knapsack(W, wt, val, n));
+    int arr[] = {12, 11, 13, 5, 6, 7};
+    int n = sizeof(arr) / sizeof(arr[0]);
+
+    printf("原始数组：\n");
+    for (int i = 0; i < n; i++)
+    {
+        printf("%d ", arr[i]);
+    }
+
+    // 对数组进行归并排序
+    mergeSort(arr, 0, n - 1);
+
+    printf("\n排序后的数组：\n");
+    for (int i = 0; i < n; i++)
+    {
+        printf("%d ", arr[i]);
+    }
+
     return 0;
 }
