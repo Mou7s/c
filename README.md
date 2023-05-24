@@ -1,2 +1,2 @@
-# c
-Clang
+# c/c++
+c/c++ projects
