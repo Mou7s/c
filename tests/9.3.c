@@ -1,29 +1,30 @@
 #include <stdio.h>
 #include <string.h>
 
-int main()
-{
-    char sentence[500];     // 输入的句子
-    char word[500];         // 存储分割出来的单词
-    char longest_word[500]; // 存储最长的单词
-    int longest_length = 0; // 最长单词的长度
-    int length;             // 当前单词的长度
+int main() {
+    char sentence[501]; // 存储输入的句子
+    char longest_word[21] = ""; // 存储最长的单词，初始化为空字符串
+    char current_word[21] = ""; // 存储当前正在处理的单词，初始化为空字符串
+    int i, j;
 
-    fgets(sentence, 500, stdin); // 读取输入的句子
+    // 读入句子
+    fgets(sentence, 501, stdin);
 
-    char *ptr = strtok(sentence, " "); // 使用空格分割单词
-    while (ptr != NULL)
-    {
-        strncpy(word, ptr, 500); // 复制单词
-        length = strlen(word);
-        if (length > longest_length)
-        { // 如果当前单词更长，则更新最长单词
-            longest_length = length;
-            strncpy(longest_word, word, 500);
+    // 处理单词
+    for (i = 0, j = 0; i < strlen(sentence); i++) {
+        if (sentence[i] == ' ' || sentence[i] == '.') { // 遇到空格或句号，表示一个单词结束
+            current_word[j] = '\0'; // 在当前单词的结尾加上字符串结束符
+            if (strlen(current_word) > strlen(longest_word)) { // 如果当前单词比最长单词更长，更新最长单词
+                strcpy(longest_word, current_word);
+            }
+            j = 0; // 重置当前单词的长度
+        } else { // 继续处理当前单词
+            current_word[j] = sentence[i];
+            j++;
         }
-        ptr = strtok(NULL, " "); // 继续分割下一个单词
     }
 
+    // 输出最长单词
     printf("%s\n", longest_word);
 
     return 0;
