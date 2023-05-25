@@ -1,40 +1,31 @@
 #include <stdio.h>
+#include <stdlib.h>
 
-// 定义背包容量和物品数量的常量
-#define MAX_WEIGHT 50
-#define NUM_ITEMS 10
-
-// 定义物品的结构体
-struct Item
-{
-    int weight; // 物品重量
-    int value;  // 物品价值
-};
-
-// 计算两个整数中的最大值
 int max(int a, int b)
 {
-    return (a > b) ? a : b;
+    return a > b ? a : b;
 }
 
-// 计算01背包问题的最大价值
-int knapsack(struct Item items[], int n)
+int knapsack(int W, int wt[], int val[], int n)
 {
     int i, w;
-    int K[n + 1][MAX_WEIGHT + 1];
-
-    // 填充K[][]表格
+    int **K = (int **)malloc((n + 1) * sizeof(int *));
     for (i = 0; i <= n; i++)
     {
-        for (w = 0; w <= MAX_WEIGHT; w++)
+        K[i] = (int *)malloc((W + 1) * sizeof(int));
+    }
+
+    for (i = 0; i <= n; i++)
+    {
+        for (w = 0; w <= W; w++)
         {
             if (i == 0 || w == 0)
             {
                 K[i][w] = 0;
             }
-            else if (items[i - 1].weight <= w)
+            else if (wt[i - 1] <= w)
             {
-                K[i][w] = max(items[i - 1].value + K[i - 1][w - items[i - 1].weight], K[i - 1][w]);
+                K[i][w] = max(val[i - 1] + K[i - 1][w - wt[i - 1]], K[i - 1][w]);
             }
             else
             {
@@ -43,28 +34,23 @@ int knapsack(struct Item items[], int n)
         }
     }
 
-    // 返回最大价值
-    return K[n][MAX_WEIGHT];
+    int result = K[n][W];
+
+    for (i = 0; i <= n; i++)
+    {
+        free(K[i]);
+    }
+    free(K);
+
+    return result;
 }
 
 int main()
 {
-    // 初始化物品数组
-    struct Item items[NUM_ITEMS] = {
-        {10, 60},
-        {20, 100},
-        {30, 120},
-        {40, 140},
-        {50, 160},
-        {10, 60},
-        {20, 100},
-        {30, 120},
-        {40, 140},
-        {50, 160}};
-
-    // 计算最大价值并输出结果
-    int max_value = knapsack(items, NUM_ITEMS);
-    printf("Maximum value: %d\n", max_value);
-
+    int val[] = {60, 100, 120};           // value
+    int wt[] = {10, 20, 30};              // weight
+    int W = 50;                           // capacity
+    int n = sizeof(val) / sizeof(val[0]); // num;
+    printf("Maximum value that can be obtained = %d", knapsack(W, wt, val, n));
     return 0;
 }
