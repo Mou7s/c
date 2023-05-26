@@ -4,7 +4,7 @@ using namespace std;
 int main()
 {
     int n; // n为细菌的数量
-    // id为记录细菌的编号，rate为记录细菌的繁殖率，第i个细菌对应id[i]和rate[i]
+    // id为记录细菌的编号,rate为记录细菌的繁殖率,第i个细菌对应id[i]和rate[i]
     int id[100];
     double rate[100];
 

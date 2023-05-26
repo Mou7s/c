@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define N 6 // 定义N，即棋盘大小
+#define N 6 // 定义N,即棋盘大小
 
 int queen[N]; // 存放每行皇后所在列的数组
 
@@ -43,7 +43,7 @@ void solve(int row) // 解决N皇后问题
 {
     int col;
     if (row == N)
-    { // 找到一组解决方案
+    { // 找到-组解决方案
         print_solution();
         return;
     }
@@ -52,7 +52,7 @@ void solve(int row) // 解决N皇后问题
         if (is_valid(row, col))
         {                     // 如果可以放置皇后
             queen[row] = col; // 记录皇后所在列
-            solve(row + 1);   // 递归处理下一行
+            solve(row + 1);   // 递归处理下-行
         }
     }
 }

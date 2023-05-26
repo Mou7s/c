@@ -1,43 +1,54 @@
 #include <stdio.h>
+#include <math.h>
+#define N 6
+#define maxT 1000
+int c[N][maxT] = {0};
 
-int max(int a, int b)
+int Memoized_Knapsack(int V[N], int w[N], int T)
 {
-    return a > b ? a : b;
+    int i;
+    int j;
+    for (i = 0; i < N; i++)
+    {
+        for (j = 0; j <= T; j++)
+        {
+            c[i][j] = -1;
+        }
+    }
+    return Calculate_Max_Value(V, w, N - 1, T);
 }
 
-int knapsack(int W, int wt[], int val[], int n)
+int Calculate_Max_Value(int v[N], int w[N], int i, int j)
 {
-    int i, w;
-    int K[n + 1][W + 1];
-
-    for (i = 0; i <= n; i++)
+    int temp = 0;
+    if (c[i][j] != -1)
     {
-        for (w = 0; w <= W; w++)
+        return c[i][j];
+    }
+    if (i == 0 || j == 0)
+    {
+        c[i][j] = 0;
+    }
+    else
+    {
+        c[i][j] = Calculate_Max_Value(v, w, i - 1, j);
+        if (w[i] <= j)
         {
-            if (i == 0 || w == 0)
+            temp = v[i] + Calculate_Max_Value(v, w, i - 1, j - w[i]);
+            if (c[i][j] < temp)
             {
-                K[i][w] = 0;
-            }
-            else if (wt[i - 1] <= w)
-            {
-                K[i][w] = max(val[i - 1] + K[i - 1][w - wt[i - 1]], K[i - 1][w]);
-            }
-            else
-            {
-                K[i][w] = K[i - 1][w];
+                c[i][j] = temp;
             }
         }
     }
-
-    return K[n][W];
+    return c[i][j];
 }
 
 int main()
 {
-    int val[] = {60, 100, 120};           // value
-    int wt[] = {10, 20, 30};              // weight
-    int W = 50;                           // capacity
-    int n = sizeof(val) / sizeof(val[0]); // nums
-    printf("Maximum value that can be obtained = %d", knapsack(W, wt, val, n));
+    int V[N] = {60, 100, 120, 150, 200, 250};
+    int w[N] = {10, 20, 30, 40, 50, 60};
+    int T = 100;
+    printf("Maximum value that can be obtained = %d", Memoized_Knapsack(V, w, T));
     return 0;
 }

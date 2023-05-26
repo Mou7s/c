@@ -3,7 +3,7 @@
 #include <vector>
 using namespace std;
 
-// 自定义比较函数，用于 sort 排序
+// 自定义比较函数,用于 sort 排序
 bool cmp(int a, int b)
 {
     return a > b;

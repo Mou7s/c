@@ -10,7 +10,7 @@ struct PetriDish
     double rate; // 繁殖率
 };
 
-// 比较函数，用于排序
+// 比较函数,用于排序
 int cmp(const void *a, const void *b)
 {
     struct PetriDish *p1 = (struct PetriDish *)a;
