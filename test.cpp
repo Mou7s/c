@@ -1,81 +1,106 @@
 #include <iostream>
-#include <vector>
-#include <string>
 using namespace std;
 
-// 观察者类
-class Observer
-{
-public:
-    // 更新方法，由具体观察者实现
-    virtual void update() = 0;
-};
-
-// 主题类
-class Subject
-{
-protected:
-    vector<Observer *> myObs; // 观察者列表
-
-public:
-    // 添加观察者
-    virtual void Attach(Observer *obs) { myObs.push_back(obs); }
-    // 移除观察者
-    virtual void Detach(Observer *obs)
-    {
-        for (vector<Observer *>::iterator iter = myObs.begin(); iter != myObs.end(); iter++)
-        {
-            if (*iter == obs)
-            {
-                myObs.erase(iter);
-                return;
-            }
-        }
-    }
-    // 通知所有观察者
-    virtual void Notify()
-    {
-        for (vector<Observer *>::iterator iter = myObs.begin(); iter != myObs.end(); iter++)
-        {
-            (*iter)->update();
-        }
-    }
-    // 获取状态，由具体主题实现
-    virtual int getStatus() = 0;
-    // 设置状态，由具体主题实现
-    virtual void setStatus(int status) = 0;
-};
-
-// 具体主题类
-class OfficeDoc : public Subject
+class CState
 {
 private:
-    string mySubjectName; // 主题名称
-    int m_status;         // 主题状态
-
+    int flyMiles; // 里程数
 public:
-    OfficeDoc(string name) : mySubjectName(name), m_status(0) {}
-    void setStatus(int status) { m_status = status; }
-    int getStatus() { return m_status; }
+    virtual double travel(int miles, class FrequentFlyer *context) = 0; // 根据累积里程数调整会员等级
 };
 
-// 具体观察者类
-class DocExplorer : public Observer
+class FrequentFlyer
 {
+    friend class CBasic;
+    friend class CSilver;
+    friend class CGold;
+
 private:
-    string myobsName; // 观察者名称
-    Subject *mySub;   // 观察的主题
+    CState *state;
+    CState *nocustomer;
+    CState *basic;
+    CState *silver;
+    CState *gold;
+    double flyMiles;
 
 public:
-    DocExplorer(string name, Subject *sub) : myobsName(name), mySub(sub) { mySub->Attach(this); }
-    void update() { cout << "update observer：" << myobsName << endl; }
+    FrequentFlyer()
+    {
+        flyMiles = 0;
+        nocustomer = new CNoCustomer();
+        basic = new CBasic();
+        silver = new CSilver();
+        gold = new CGold();
+        setState(nocustomer);
+    }
+    void setState(CState *state)
+    {
+        this->state = state;
+    }
+    void travel(int miles)
+    {
+        double bonusMiles = state->travel(miles, this);
+        flyMiles = flyMiles + bonusMiles;
+    }
 };
 
-int main()
+class CNoCustomer : public CState // 非会员
 {
-    Subject *subjectA = new OfficeDoc("subject A");                // 创建主题对象
-    Observer *observerA = new DocExplorer("observer A", subjectA); // 创建观察者对象并将其绑定到主题上
-    subjectA->setStatus(1);                                        // 修改主题状态
-    subjectA->Notify();                                            // 通知所有观察者
-    return 0;
-}
+public:
+    double travel(int miles, FrequentFlyer *context)
+    {
+        cout << "Your travel will not account for points\n"; // 不累积里程数
+        return miles;
+    }
+};
+
+class CBasic : public CState // 普卡会员
+{
+public:
+    double travel(int miles, FrequentFlyer *context)
+    {
+        if (context->flyMiles >= 25000 && context->flyMiles < 50000)
+        {
+            context->setState(context->silver);
+        }
+        if (context->flyMiles < 25000)
+        {
+            context->setState(context->basic);
+        }
+        return miles + 0.5 * miles; // 累积里程数
+    }
+};
+
+class CGold : public CState // 金卡会员
+{
+public:
+    double travel(int miles, FrequentFlyer *context)
+    {
+        if (context->flyMiles >= 25000 && context->flyMiles < 50000)
+        {
+            context->setState(context->silver);
+        }
+        if (context->flyMiles < 25000)
+        {
+            context->setState(context->basic);
+        }
+        return miles + 0.5 * miles; // 累积里程数
+    }
+};
+
+class CSilver : public CState // 银卡会员
+{
+public:
+    double travel(int miles, FrequentFlyer *context)
+    {
+        if (context->flyMiles < 25000)
+        {
+            context->setState(context->basic);
+        }
+        if (context->flyMiles >= 50000)
+        {
+            context->setState(context->gold);
+        }
+        return (miles + 0.25 * miles); // 累积里程数
+    }
+};

@@ -13,6 +13,7 @@
         "string_view": "cpp",
         "initializer_list": "cpp",
         "iomanip": "cpp",
-        "new": "cpp"
+        "new": "cpp",
+        "stdlib.h": "c"
     }
 }
