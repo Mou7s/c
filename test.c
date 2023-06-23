@@ -1,18 +1,12 @@
 #include <stdio.h>
 
-unsigned int unsignedAddition(unsigned int x, unsigned int y)
-{
-    unsigned int sum = x + y;
-    return sum;
-}
-
 int main()
 {
-    unsigned int c1 = 255;
-    unsigned int c2 = 10;
-    unsigned int result = unsignedAddition(c1, c2);
+    unsigned int x = 4294967295; // 2^32 - 1，无符号整数的最大值
+    unsigned int y = x + 1;      // 溢出
 
-    printf("c1 + c2 = %u\n", result);
+    printf("x: %u\n", x);
+    printf("y: %u\n", y);
 
     return 0;
 }
