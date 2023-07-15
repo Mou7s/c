@@ -10,12 +10,8 @@ unsigned long Fibonacci(unsigned n)
 
 int main(void)
 {
-    unsigned n;
-
-    printf("请输入斐波那契数列的第几个数：");
-    scanf("%u", &n);
-
-    printf("斐波那契数列的第 %u 项是 %lu\n", n, Fibonacci(n));
-
+    unsigned n = 10;
+    unsigned long fib = Fibonacci(n);
+    printf("The %uth Fibonacci number is %lu\n", n, fib);
     return 0;
 }
