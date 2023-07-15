@@ -24,7 +24,7 @@ int *twoSum(int *nums, int numsSize, int target, int *returnSize)
 
 int main()
 {
-    int nums[] = {2, 7, 11, 15};
+    int nums[] = {15, 11, 7, 2};
     int target = 9;
     int *result;
     int returnSize;
