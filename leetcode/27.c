@@ -2,6 +2,7 @@
 
 int removeElement(int *nums, int numsSize, int val)
 {
+
     int i = 0; // 指针 i 指向新数组的末尾
 
     for (int j = 0; j < numsSize; j++)
