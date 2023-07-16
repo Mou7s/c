@@ -2,27 +2,39 @@
 
 int search(int *nums, int numsSize, int target)
 {
+
+    // 数组为空，直接返回 -1
+    if (numsSize == 0)
+    {
+        return -1;
+    }
+
     int left = 0;
     int right = numsSize - 1;
 
-    while (left <= right)
+    while (left < right)
     {
-        int mid = left + (right - left) / 2;
+        int mid = left + ((right - left) >> 1); // 计算中间索引，使用位运算替代除以2
         if (nums[mid] == target)
         {
-            return mid;
+            return mid; // 找到目标元素，返回索引
         }
         else if (target < nums[mid])
         {
-            right = mid - 1;
+            right = mid - 1; // 目标元素在左半部分，更新右边界
         }
         else
         {
-            left = mid + 1;
+            left = mid + 1; // 目标元素在右半部分，更新左边界
         }
     }
 
-    return -1;
+    if (nums[left] == target)
+    {
+        return left; // 检查最后一个元素是否是目标元素
+    }
+
+    return -1; // 目标元素不存在，返回 -1
 }
 
 int main()
