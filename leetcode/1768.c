@@ -17,13 +17,17 @@ char *mergeAlternately(char *word1, char *word2)
         result[i + j] = word2[j];
         j++;
     }
-    if (i < len1)
+    // Copy remaining characters from word1
+    while (i < len1)
     {
-        strncat(result, word1 + i, len1 - i);
+        result[i + j] = word1[i];
+        i++;
     }
-    else if (j < len2)
+    // Copy remaining characters from word2
+    while (j < len2)
     {
-        strncat(result, word2 + j, len2 - j);
+        result[i + j] = word2[j];
+        j++;
     }
     result[len1 + len2] = '\0';
     return result;
