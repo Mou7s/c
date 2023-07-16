@@ -4,40 +4,30 @@
 
 char *gcdOfStrings(char *str1, char *str2)
 {
+    if (strcmp(str1, str2) == 0)
+    {
+        return str1;
+    }
+
     int len1 = strlen(str1);
     int len2 = strlen(str2);
-    int i, j, gcd = 0;
 
-    for (i = 0; i < len1 && i < len2; i++)
+    if (len1 < len2)
     {
-        if (str1[i] == str2[i])
-        {
-            gcd = i + 1;
-        }
-        else
-        {
-            break;
-        }
+        return gcdOfStrings(str2, str1);
     }
 
-    char *result = malloc(gcd + 1);
-    if (result == NULL)
+    if (strncmp(str1, str2, len2) != 0)
     {
-        return NULL;
+        return "";
     }
 
-    for (i = 0; i < gcd; i++)
-    {
-        result[i] = str1[i];
-    }
-    result[gcd] = '\0';
-
-    return result;
+    return gcdOfStrings(str1 + len2, str2);
 }
 int main()
 {
-    char str1[] = "ABCABC";
-    char str2[] = "ABC";
+    char str1[] = "ABCDABCD";
+    char str2[] = "ABCD";
     char *result = gcdOfStrings(str1, str2);
     printf("GCD of Strings: %s\n", result);
     free(result);
