@@ -1,17 +1,18 @@
 #include <stdio.h>
 
-unsigned long Fibonacci(unsigned n)
+double calculatePolynomial(double x, double a, double b, double c, double d)
 {
-    if (n > 2)
-        return Fibonacci(n - 1) + Fibonacci(n - 2);
-    else
-        return 1;
+    double result = a * x * x * x + b * x * x + c * x + d;
+    return result;
 }
 
-int main(void)
+int main()
 {
-    unsigned n = 10;
-    unsigned long fib = Fibonacci(n);
-    printf("The %uth Fibonacci number is %lu\n", n, fib);
+    double x, a, b, c, d;
+    scanf("%lf %lf %lf %lf %lf", &x, &a, &b, &c, &d);
+
+    double result = calculatePolynomial(x, a, b, c, d);
+    printf("%.7lf\n", result);
+
     return 0;
 }
