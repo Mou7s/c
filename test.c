@@ -1,18 +1,15 @@
 #include <stdio.h>
+#include <math.h>
 
-double calculatePolynomial(double x, double a, double b, double c, double d)
-{
-    double result = a * x * x * x + b * x * x + c * x + d;
-    return result;
-}
+#define PI 3.1415926
 
 int main()
 {
-    double x, a, b, c, d;
-    scanf("%lf %lf %lf %lf %lf", &x, &a, &b, &c, &d);
-
-    double result = calculatePolynomial(x, a, b, c, d);
-    printf("%.7lf\n", result);
-
+    double radius; // 球的半径
+    while (scanf("%lf", &radius) == 1)
+    {
+        double volume = (4.0 / 3.0) * PI * pow(radius, 3); // 计算球的体积
+        printf("%.3lf\n", volume);
+    }
     return 0;
 }
