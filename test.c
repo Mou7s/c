@@ -2,14 +2,20 @@
 
 int main()
 {
-    double balance, sum = 0;
-    for (int i = 0; i < 12; i++)
+    int m, n, sum = 0;
+
+    scanf("%d %d", &m, &n);
+
+    while (m <= n)
     {
-        scanf("%lf", &balance);
-        sum += balance;
+        if (m % 17 == 0)
+        {
+            sum += m;
+        }
+
+        m++;
     }
 
-    double result = sum / 12;
-    printf("$%.2lf", result);
+    printf("%d", sum);
     return 0;
 }

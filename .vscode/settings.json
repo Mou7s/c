@@ -17,7 +17,9 @@
     "stdlib.h": "c",
     "stdbool.h": "c",
     "BM87.C": "cpp",
-    "functional": "c"
+    "functional": "c",
+    "string.h": "c",
+    "math.h": "c"
   },
   "C_Cpp_Runner.msvcBatchPath": "",
   "C_Cpp_Runner.cCompilerPath": "gcc",
