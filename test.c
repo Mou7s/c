@@ -8,7 +8,7 @@ int compare(const void *a, const void *b)
 
 int main()
 {
-    int arr[] = {12, 11, 13, 5, 6};
+    int arr[] = {12, 11, 13, 5, 6, 42};
     int len = sizeof(arr) / sizeof(arr[0]);
 
     printf("Original array: ");
