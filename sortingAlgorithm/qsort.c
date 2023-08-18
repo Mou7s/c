@@ -1,10 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "./compare.c"
+
+int compare(const void *a, const void *b)
+{
+    return (*(int *)a - *(int *)b);
+}
 
 int main()
 {
-
     int arr[] = {12, 11, 13, 5, 6, 42};
     int len = sizeof(arr) / sizeof(arr[0]);
 
