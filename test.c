@@ -1,23 +1,27 @@
 #include <stdio.h>
-
-long long factorial(int n)
-{
-    if (n == 0 || n == 1)
-    {
-        return 1; // 基本情况
-    }
-    else
-    {
-        return factorial(n - 1) * n; // 递归调用
-    }
-}
+#include <ctype.h>
 
 int main()
 {
-    int num;
-    printf("input number:");
-    scanf("%d", &num);
-    long long result = factorial(num);
-    printf("%lld", result);
+    char ch = 'A';
+
+    if (isalpha(ch))
+    {
+        printf("%c is an alphabet.\n", ch);
+    }
+    else
+    {
+        printf("%c is not an alphabet.\n", ch);
+    }
+
+    if (isdigit(ch))
+    {
+        printf("%c is a digit.\n", ch);
+    }
+    else
+    {
+        printf("%c is not a digit.\n", ch);
+    }
+
     return 0;
 }
