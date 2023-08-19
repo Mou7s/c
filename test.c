@@ -1,17 +1,25 @@
 #include <stdio.h>
-int sum(int m, int n)
+
+// 函数定义，有两个形参
+int add(int a, int b)
 {
-    int i, sum = 0;
-    for (i = m; i <= n; i++)
-    {
-        sum += i;
-    }
-    return sum;
+    return a + b;
 }
+
 int main()
 {
-    int begin = 5, end = 86;
-    int result = sum(begin, end);
-    printf("The sum from %d to %d is %d\n", begin, end, result);
+    int num1, num2;
+
+    printf("Enter first number: ");
+    scanf("%d", &num1);
+
+    printf("Enter second number: ");
+    scanf("%d", &num2);
+
+    // 函数调用，传递num1和num2作为实参
+    int result = add(num1, num2);
+
+    printf("Sum: %d\n", result);
+
     return 0;
 }
