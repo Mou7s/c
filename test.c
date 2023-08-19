@@ -1,19 +1,11 @@
 #include <stdio.h>
-// 不同的平台下引入不同的头文件
-#if _WIN32 // 识别windows平台
-#include <windows.h>
-#elif __linux__ // 识别linux平台
-#include <unistd.h>
-#endif
-
+#define SQ(y) (y) * (y)
 int main()
 {
-// 不同的平台下调用不同的函数
-#if _WIN32 // 识别windows平台
-
-    printf("windows\n");
-#elif __linux__ // 识别linux平台
-    printf("linux\n");
-#endif
+    int a, sq;
+    printf("input a number: ");
+    scanf("%d", &a);
+    sq = SQ(a + 1);
+    printf("sq=%d\n", sq);
     return 0;
 }
