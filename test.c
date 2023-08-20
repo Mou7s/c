@@ -1,15 +1,27 @@
 #include <stdio.h>
-void swap(int *p1, int *p2)
+
+// 回调函数：执行操作
+int add(int a, int b)
 {
-    int temp; // 临时变量
-    temp = *p1;
-    *p1 = *p2;
-    *p2 = temp;
+    return a + b;
 }
+
+int subtract(int a, int b)
+{
+    return a - b;
+}
+
+// 执行回调操作的函数
+void executeOperation(int (*operation)(int, int), int a, int b)
+{
+    int result = operation(a, b);
+    printf("Result: %d\n", result);
+}
+
 int main()
 {
-    int a = 66, b = 99;
-    swap(&a, &b);
-    printf("a = %d, b = %d\n", a, b);
+    executeOperation(add, 3, 4);      // 调用 executeOperation，使用 add 函数
+    executeOperation(subtract, 8, 5); // 调用 executeOperation，使用 subtract 函数
+
     return 0;
 }
