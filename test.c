@@ -1,26 +1,45 @@
 #include <stdio.h>
-struct stu
+#include <stdlib.h> // 用于动态内存分配函数
+
+// 定义结构体
+struct Student
 {
-    char *name;  // 姓名
-    int num;     // 学号
-    int age;     // 年龄
-    char group;  // 所在小组
-    float score; // 成绩
-} stus[] = {
-    {"Zhou ping", 5, 18, 'C', 145.0},
-    {"Zhang ping", 4, 19, 'A', 130.5},
-    {"Liu fang", 1, 18, 'A', 148.5},
-    {"Cheng ling", 2, 17, 'F', 139.0},
-    {"Wang ming", 3, 17, 'B', 144.5}},
-  *ps;
+    char *name;
+    int age;
+    float gpa;
+};
+
 int main()
 {
-    // 求数组长度
-    int len = sizeof(stus) / sizeof(struct stu);
-    printf("Name\t\tNum\tAge\tGroup\tScore\t\n");
-    for (ps = stus; ps < stus + len; ps++)
+    int numStudents = 3;
+
+    // 动态分配内存来存储学生信息的数组
+    struct Student *studentDB = (struct Student *)malloc(numStudents * sizeof(struct Student));
+
+    // 初始化学生信息
+    studentDB[0].name = "Alice";
+    studentDB[0].age = 20;
+    studentDB[0].gpa = 3.8;
+
+    studentDB[1].name = "Bob";
+    studentDB[1].age = 22;
+    studentDB[1].gpa = 3.5;
+
+    studentDB[2].name = "Charlie";
+    studentDB[2].age = 21;
+    studentDB[2].gpa = 3.9;
+
+    // 打印学生信息
+    printf("Student Database:\n");
+    printf("Name\tAge\tGPA\n");
+
+    for (int i = 0; i < numStudents; i++)
     {
-        printf("%s\t%d\t%d\t%c\t%.1f\n", ps->name, ps->num, ps->age, ps->group, ps->score);
+        printf("%s\t%d\t%.2f\n", studentDB[i].name, studentDB[i].age, studentDB[i].gpa);
     }
-    return 0;   
+
+    // 释放分配的内存
+    free(studentDB);
+
+    return 0;
 }
