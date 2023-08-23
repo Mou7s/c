@@ -1,45 +1,27 @@
 #include <stdio.h>
-#include <stdlib.h> // 用于动态内存分配函数
 
-// 定义结构体
-struct Student
+struct ExampleStruct
 {
-    char *name;
-    int age;
-    float gpa;
+    int intValue;
+    float floatValue;
+};
+
+union ExampleUnion
+{
+    int intValue;
+    float floatValue;
 };
 
 int main()
 {
-    int numStudents = 3;
+    struct ExampleStruct structInstance;
+    union ExampleUnion unionInstance;
 
-    // 动态分配内存来存储学生信息的数组
-    struct Student *studentDB = (struct Student *)malloc(numStudents * sizeof(struct Student));
+    structInstance.intValue = 42;
+    structInstance.floatValue = 3.14;
 
-    // 初始化学生信息
-    studentDB[0].name = "Alice";
-    studentDB[0].age = 20;
-    studentDB[0].gpa = 3.8;
-
-    studentDB[1].name = "Bob";
-    studentDB[1].age = 22;
-    studentDB[1].gpa = 3.5;
-
-    studentDB[2].name = "Charlie";
-    studentDB[2].age = 21;
-    studentDB[2].gpa = 3.9;
-
-    // 打印学生信息
-    printf("Student Database:\n");
-    printf("Name\tAge\tGPA\n");
-
-    for (int i = 0; i < numStudents; i++)
-    {
-        printf("%s\t%d\t%.2f\n", studentDB[i].name, studentDB[i].age, studentDB[i].gpa);
-    }
-
-    // 释放分配的内存
-    free(studentDB);
+    unionInstance.intValue = 42;
+    printf("union floatValue: %.2f\n", unionInstance.floatValue);
 
     return 0;
 }
