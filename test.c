@@ -1,27 +1,15 @@
 #include <stdio.h>
 
-struct ExampleStruct
-{
-    int intValue;
-    float floatValue;
-};
-
-union ExampleUnion
-{
-    int intValue;
-    float floatValue;
-};
+typedef int IntArray[5];
 
 int main()
 {
-    struct ExampleStruct structInstance;
-    union ExampleUnion unionInstance;
+    IntArray numbers = {1, 2, 3, 4, 5};
 
-    structInstance.intValue = 42;
-    structInstance.floatValue = 3.14;
-
-    unionInstance.intValue = 42;
-    printf("union floatValue: %.2f\n", unionInstance.floatValue);
+    for (int i = 0; i < 5; i++)
+    {
+        printf("numbers[%d] = %d\n", i, numbers[i]);
+    }
 
     return 0;
 }
