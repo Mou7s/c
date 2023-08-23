@@ -1,20 +1,21 @@
 #include <stdio.h>
-
 int main()
 {
-    FILE *file_ptr;
-    char *filename = "./data.txt";
+    FILE *fp;
+    char ch;
 
-    file_ptr = fopen(filename, "w"); // 打开文件以写入模式
-
-    if (file_ptr == NULL)
+    // 如果文件不存在，给出提示并退出
+    if ((fp = fopen("./data.txt", "rt")) == NULL)
     {
-        printf("Failed to open the file.\n");
-        return 1;
+        puts("Fail to open file!");
+        exit(0);
     }
-
-    fprintf(file_ptr, "Hello, world!\n");
-    fclose(file_ptr);
-
+    // 每次读取一个字节，直到读取完毕
+    while ((ch = fgetc(fp)) != EOF)
+    {
+        putchar(ch);
+    }
+    putchar('\n'); // 输出换行符
+    fclose(fp);
     return 0;
 }
