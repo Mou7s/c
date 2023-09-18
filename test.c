@@ -1,33 +1,32 @@
 #include <stdio.h>
-#define ROW 10
-#define COL 10
-int map[ROW][COL];
+#include <limits.h>
 
-void gameinit()
+int uadd_ok(unsigned a, unsigned b)
 {
-    for (int i = 0; i < ROW; i++)
+    // 检查无符号整数相加是否溢出
+    if (a < UINT_MAX - b)
     {
-        for (int j = 0; j < COL; j++)
-        {
-            map[i][j] = 0;
-        }
+        return 1; // 没有溢出
     }
-}
-
-void show()
-{
-    for (int i = 0; i < ROW; i++)
+    else
     {
-        for (int j = 0; j < COL; j++)
-        {
-            printf("%d  ", map[i][j]);
-        }
-        printf("\n");
+        return 0; // 溢出
     }
 }
 
 int main()
 {
-    show();
+    unsigned int num1 = 20090000000; // 一个较大的无符号整数
+    unsigned int num2 = 300000000;   // 另一个较大的无符号整数
+
+    if (uadd_ok(num1, num2))
+    {
+        printf("没有溢出\n");
+    }
+    else
+    {
+        printf("溢出\n");
+    }
+
     return 0;
 }

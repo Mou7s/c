@@ -1,36 +1,26 @@
-// 检测补码加法中的溢出
 #include <stdio.h>
+#include <stdbool.h>
 
-int tadd_ok(int x, int y)
+// Function to check for overflow when adding two integers
+bool tadd_ok(int x, int y)
 {
     int sum = x + y;
-    int neg_over = x < 0 && y < 0 && sum >= 0;
-    int pos_over = x >= 0 && y >= 0 && sum < 0;
-    return !neg_over && !pos_over;
+    // Overflow occurs if the signs of x and y are the same and the sign of the sum is different
+    return !((x > 0 && y > 0 && sum <= 0) || (x < 0 && y < 0 && sum >= 0));
 }
 
 int main()
 {
-    int x = 2147483647; // 最大的正数
+    int x = 2147483647; // Maximum positive integer
     int y = 1;
-    if (tadd_ok(x, y))
-    {
-        printf("%d + %d = no overflow\n", x, y);
-    }
-    else
-    {
-        printf("%d + %d = overflow\n", x, y);
-    }
 
-    x = -2147483648; // 最小的负数
-    y = -1;
     if (tadd_ok(x, y))
     {
-        printf("%d + %d = no overflow\n", x, y);
+        printf("No overflow\n");
     }
     else
     {
-        printf("%d + %d = overflow\n", x, y);
+        printf("Overflow\n");
     }
 
     return 0;
