@@ -2,20 +2,19 @@
 
 void selectionSort(int arr[], int n)
 {
-    int i, j, minIndex, temp;
-    for (int i = 0; i < n - 1; i++)
+    for (int i = 0; i < n; i++)
     {
-        minIndex = i;
-        for (j = i; j < n; j++)
+        int temp, min = i;
+        for (int j = i; j < n; j++)
         {
-            if (arr[j] < arr[minIndex])
+            if (arr[j] < arr[min])
             {
-                minIndex = j;
+                min = j;
             }
         }
         temp = arr[i];
-        arr[i] = arr[minIndex];
-        arr[minIndex] = temp;
+        arr[i] = arr[min];
+        arr[min] = temp;
     }
 }
 int main()
