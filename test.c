@@ -1,42 +1,45 @@
 #include <stdio.h>
 
-void selectionSort(int arr[], int n)
+/* 选择排序 */
+
+void selectSort(int nums[], int size)
 {
-    for (int i = 0; i < n; i++)
+    for (int i = 0; i < size - 1; i++)
     {
-        int temp, min = i;
-        for (int j = i; j < n; j++)
+        int min = i;
+        for (int j = i + 1; j < size; j++)
         {
-            if (arr[j] < arr[min])
+            if (nums[j] < nums[min])
             {
                 min = j;
             }
         }
-        temp = arr[i];
-        arr[i] = arr[min];
-        arr[min] = temp;
+
+        // 交换最小值和当前位置的元素
+        int temp = nums[i];
+        nums[i] = nums[min];
+        nums[min] = temp;
     }
 }
+
 int main()
 {
-    int arr[] = {64, 34, 25, 12, 22, 11, 90};
+    int arr[] = {12, 11, 13, 5, 6};
     int n = sizeof(arr) / sizeof(arr[0]);
 
-    printf("原始数组：\n");
+    printf("未排序数组：\n");
     for (int i = 0; i < n; i++)
     {
         printf("%d ", arr[i]);
     }
-    printf("\n");
 
-    selectionSort(arr, n);
+    selectSort(arr, n);
 
-    printf("排序后的数组：\n");
+    printf("\n已排序数组：\n");
     for (int i = 0; i < n; i++)
     {
         printf("%d ", arr[i]);
     }
-    printf("\n");
 
     return 0;
 }

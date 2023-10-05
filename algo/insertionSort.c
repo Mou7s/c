@@ -1,22 +1,23 @@
 #include <stdio.h>
 
-/* 插入排序 */
-
+// 插入排序函数
 void insertionSort(int nums[], int size)
 {
-    // 外循环：已排序元素数量为 1, 2, ..., n
+    // 外层循环从第二个元素开始，因为第一个元素默认已经是有序的
     for (int i = 1; i < size; i++)
     {
-        int base = nums[i], j = i - 1;
-        // 内循环：将 base 插入到已排序部分的正确位置
-        while (j >= 0 && nums[j] > base)
+        int currentElement = nums[i]; // 保存当前需要插入的元素
+        int j = i - 1;                // j用于在已排序部分查找合适的位置
+
+        // 在已排序部分寻找合适的插入位置
+        while (j >= 0 && nums[j] > currentElement)
         {
-            // 将 nums[j] 向右移动一位
-            nums[j + 1] = nums[j];
+            nums[j + 1] = nums[j]; // 将大于currentElement的元素后移一位
             j--;
         }
-        // 将 base 赋值到正确位置
-        nums[j + 1] = base;
+
+        // 将currentElement插入到合适的位置
+        nums[j + 1] = currentElement;
     }
 }
 
