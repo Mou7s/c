@@ -38,29 +38,6 @@ void push(struct Stack *stack, int value)
     }
     stack->data[++stack->top] = value;
 }
-
-// 出栈操作
-int pop(struct Stack *stack)
-{
-    if (isEmpty(stack))
-    {
-        printf("栈为空，无法出栈\n");
-        return -1; // 返回一个特殊值表示出错
-    }
-    return stack->data[stack->top--];
-}
-
-// 获取栈顶元素但不出栈
-int peek(struct Stack *stack)
-{
-    if (isEmpty(stack))
-    {
-        printf("栈为空，无法获取栈顶元素\n");
-        return -1; // 返回一个特殊值表示出错
-    }
-    return stack->data[stack->top];
-}
-
 int main()
 {
     struct Stack stack;
