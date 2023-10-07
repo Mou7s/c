@@ -1,59 +1,62 @@
 #include <stdio.h>
+#include <stdlib.h>
 
-void swap(int *a, int *b)
+// 定义链表节点的结构
+struct Node
 {
-    int temp = *a;
-    *a = *b;
-    *b = temp;
-}
+    int data;
+    struct Node *next;
+};
 
-int partition(int arr[], int low, int high)
+// 初始化一个空链表
+struct Node *head = NULL;
+// 插入一个新节点到链表的末尾
+void insert(int data)
 {
-    int pivot = arr[high];
-    int i = (low - 1);
+    // 创建一个新节点
+    struct Node *newNode = (struct Node *)malloc(sizeof(struct Node));
+    newNode->data = data;
+    newNode->next = NULL;
 
-    for (int j = low; j <= high - 1; j++)
+    // 如果链表为空，将新节点设为头节点
+    if (head == NULL)
     {
-        if (arr[j] < pivot)
-        {
-            i++;
-            swap(&arr[i], &arr[j]);
-        }
+        head = newNode;
+        return;
     }
-    swap(&arr[i + 1], &arr[high]);
-    return (i + 1);
-}
 
-void quickSort(int arr[], int low, int high)
-{
-    if (low < high)
+    // 找到链表的最后一个节点
+    struct Node *current = head;
+    while (current->next != NULL)
     {
-        int pi = partition(arr, low, high);
-
-        quickSort(arr, low, pi - 1);
-        quickSort(arr, pi + 1, high);
+        current = current->next;
     }
+
+    // 将新节点连接到最后一个节点的后面
+    current->next = newNode;
 }
 
+// 打印链表的所有元素
+void printList()
+{
+    struct Node *current = head;
+    printf("链表元素: ");
+    while (current != NULL)
+    {
+        printf("%d -> ", current->data);
+        current = current->next;
+    }
+    printf("NULL\n");
+}
 int main()
 {
-    int arr[] = {64, 25, 12, 22, 11};
-    int n = sizeof(arr) / sizeof(arr[0]);
+    // 插入一些元素到链表
+    insert(1);
+    insert(2);
+    insert(3);
 
-    printf("原始数组：\n");
-    for (int i = 0; i < n; i++)
-    {
-        printf("%d ", arr[i]);
-    }
-    printf("\n");
+    // 打印链表
+    printList();
 
-    quickSort(arr, 0, n - 1);
-
-    printf("排序后的数组：\n");
-    for (int i = 0; i < n; i++)
-    {
-        printf("%d ", arr[i]);
-    }
-    printf("\n");
     return 0;
 }
