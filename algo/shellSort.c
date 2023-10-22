@@ -19,7 +19,7 @@ void shellSort(int arr[], int n)
 
 int main()
 {
-    int arr[] = {12, 34, 54, 2, 3};
+    int arr[] = {7, 3, 5, 9, 2, 0, 8, 6};
     int n = sizeof(arr) / sizeof(arr[0]);
 
     printf("原始数组：\n");
