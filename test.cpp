@@ -1,34 +1,84 @@
-#include <stdarg.h>
-#include <stdio.h>
+#include <iostream>
+#include <string>
+#include <vector>
 
-void test(int tot, ...)
+using namespace std; // 使用using指令简化代码
+
+class ChatMediator; // 前向声明 ChatMediator 类
+
+class User
 {
-    va_list valist;
-    int i;
+public:
+    User(const string &name, ChatMediator *mediator);
 
-    // 初始化可变参数列表
-    va_start(valist, tot);
+    void sendMessage(const string &message);
 
-    for (i = 0; i < tot; ++i)
+    void receiveMessage(const string &message);
+
+private:
+    string name;
+    ChatMediator *mediator;
+};
+
+class ChatMediator
+{
+public:
+    virtual void sendMessage(User *user, const string &message) = 0;
+};
+
+class ConcreteMediator : public ChatMediator
+{
+public:
+    void addUser(User *user)
     {
-        // 获取第 i 个变量的值
-        double xx = va_arg(valist, double); // Correct
-        // float xx = va_arg(valist, float); // Wrong
-
-        // 输出第 i 个变量的底层存储内容
-        printf("i = %d, value = 0x%016llx\n", i, *(long long *)(&xx));
+        users.push_back(user);
     }
 
-    // 清理可变参数列表的内存
-    va_end(valist);
+    void sendMessage(User *user, const string &message)
+    {
+        for (User *u : users)
+        {
+            if (u != user)
+            {
+                u->receiveMessage(message);
+            }
+        }
+    }
+
+private:
+    vector<User *> users;
+};
+
+// User 类的成员函数实现
+User::User(const string &name, ChatMediator *mediator) : name(name), mediator(mediator)
+{
+}
+
+void User::sendMessage(const string &message)
+{
+    mediator->sendMessage(this, message);
+}
+
+void User::receiveMessage(const string &message)
+{
+    cout << name << " received message: " << message << endl;
 }
 
 int main()
 {
-    float f;
-    double fd, d;
-    f = 123.;  // 0x42f60000
-    fd = 123.; // 0x405ec00000000000
-    d = 456.;  // 0x407c800000000000
-    test(3, f, fd, d);
+    ConcreteMediator mediator;
+
+    User alice("Alice", &mediator);
+    User bob("Bob", &mediator);
+    User charlie("Charlie", &mediator);
+
+    mediator.addUser(&alice);
+    mediator.addUser(&bob);
+    mediator.addUser(&charlie);
+
+    alice.sendMessage("Hello, everyone!");
+    bob.sendMessage("Hi, Alice!");
+    charlie.sendMessage("Hey there!");
+
+    return 0;
 }
