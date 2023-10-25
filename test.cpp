@@ -2,83 +2,104 @@
 #include <string>
 #include <vector>
 
-using namespace std; // 使用using指令简化代码
+using namespace std;
 
-class ChatMediator; // 前向声明 ChatMediator 类
+class Colleague; // 前置声明
 
-class User
+// 抽象中介者
+class Mediator
 {
 public:
-    User(const string &name, ChatMediator *mediator);
+    virtual void sendMessage(const string &message, Colleague *colleague) = 0;
+};
 
-    void sendMessage(const string &message);
+// 具体中介者
+class ConcreteMediator : public Mediator
+{
+public:
+    void setColleague1(Colleague *colleague);
+    void setColleague2(Colleague *colleague);
 
-    void receiveMessage(const string &message);
+    virtual void sendMessage(const string &message, Colleague *colleague);
 
 private:
-    string name;
-    ChatMediator *mediator;
+    Colleague *colleague1;
+    Colleague *colleague2;
 };
 
-class ChatMediator
+// 抽象同事类
+class Colleague
 {
 public:
-    virtual void sendMessage(User *user, const string &message) = 0;
+    Colleague(Mediator *mediator) : mediator(mediator) {}
+
+    virtual void send(const string &message)
+    {
+        mediator->sendMessage(message, this);
+    }
+
+    virtual void receiveMessage(const string &message) = 0;
+
+protected:
+    Mediator *mediator;
 };
 
-class ConcreteMediator : public ChatMediator
+// 定义同事类
+class ConcreteColleague1 : public Colleague
 {
 public:
-    void addUser(User *user)
-    {
-        users.push_back(user);
-    }
+    ConcreteColleague1(Mediator *mediator) : Colleague(mediator) {}
 
-    void sendMessage(User *user, const string &message)
+    virtual void receiveMessage(const string &message)
     {
-        for (User *u : users)
-        {
-            if (u != user)
-            {
-                u->receiveMessage(message);
-            }
-        }
+        cout << "同事1收到消息: " << message << endl;
     }
-
-private:
-    vector<User *> users;
 };
 
-// User 类的成员函数实现
-User::User(const string &name, ChatMediator *mediator) : name(name), mediator(mediator)
+class ConcreteColleague2 : public Colleague
 {
+public:
+    ConcreteColleague2(Mediator *mediator) : Colleague(mediator) {}
+
+    virtual void receiveMessage(const string &message)
+    {
+        cout << "同事2收到消息: " << message << endl;
+    }
+};
+
+void ConcreteMediator::setColleague1(Colleague *colleague)
+{
+    colleague1 = colleague;
 }
 
-void User::sendMessage(const string &message)
+void ConcreteMediator::setColleague2(Colleague *colleague)
 {
-    mediator->sendMessage(this, message);
+    colleague2 = colleague;
 }
 
-void User::receiveMessage(const string &message)
+void ConcreteMediator::sendMessage(const string &message, Colleague *colleague)
 {
-    cout << name << " received message: " << message << endl;
+    if (colleague == colleague1)
+    {
+        colleague2->receiveMessage(message);
+    }
+    else if (colleague == colleague2)
+    {
+        colleague1->receiveMessage(message);
+    }
 }
 
 int main()
 {
     ConcreteMediator mediator;
+    ConcreteColleague1 colleague1(&mediator);
+    ConcreteColleague2 colleague2(&mediator);
 
-    User alice("Alice", &mediator);
-    User bob("Bob", &mediator);
-    User charlie("Charlie", &mediator);
+    mediator.setColleague1(&colleague1);
+    mediator.setColleague2(&colleague2);
 
-    mediator.addUser(&alice);
-    mediator.addUser(&bob);
-    mediator.addUser(&charlie);
-
-    alice.sendMessage("Hello, everyone!");
-    bob.sendMessage("Hi, Alice!");
-    charlie.sendMessage("Hey there!");
+    colleague1.send("你好，同事2！");
+    colleague2.send("你好，同事1！");
 
     return 0;
 }
