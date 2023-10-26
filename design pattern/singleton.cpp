@@ -3,23 +3,25 @@
 class Singleton
 {
 public:
-    // 静态成员函数，用于获取唯一的实例
+    // 获取单例实例的静态方法
     static Singleton &getInstance()
     {
-        static Singleton instance; // 使用静态变量确保只创建一次
+        // 使用局部静态变量保证线程安全的延迟初始化
+        static Singleton instance;
         return instance;
     }
 
+    // 其他成员函数
     void doSomething()
     {
         std::cout << "Singleton is doing something." << std::endl;
     }
 
 private:
-    // 私有构造函数，防止外部创建对象
+    // 私有构造函数，防止外部创建实例
     Singleton() {}
 
-    // 阻止拷贝构造和赋值操作
+    // 防止拷贝构造和赋值操作
     Singleton(const Singleton &) = delete;
     Singleton &operator=(const Singleton &) = delete;
 };
@@ -27,11 +29,10 @@ private:
 int main()
 {
     // 获取单例实例
-    Singleton &instance = Singleton::getInstance();
-    instance.doSomething();
+    Singleton &singleton = Singleton::getInstance();
 
-    // 尝试创建新实例，将会引发编译错误
-    // Singleton anotherInstance; // 这将无法编译
+    // 使用单例实例
+    singleton.doSomething();
 
     return 0;
 }
