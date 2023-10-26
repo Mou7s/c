@@ -1,43 +1,49 @@
 #include <iostream>
+using namespace std;
 
-// 旧的类
-class OldLibrary
+// 目标接口
+class SquarePeg
 {
 public:
-    void oldMethod()
+    virtual void insertIntoHole() = 0;
+};
+
+// 适配者类
+class RoundPeg
+{
+public:
+    void insertIntoHole()
     {
-        std::cout << "Old method is called." << std::endl;
+        cout << "Round peg inserted into hole." << endl;
     }
 };
 
-// 新的接口
-class NewInterface
-{
-public:
-    virtual void newMethod() = 0;
-};
-
-// 适配器类，继承新接口并包含旧类的实例
-class Adapter : public NewInterface
+// 适配器类
+class SquarePegAdapter : public SquarePeg
 {
 private:
-    OldLibrary old;
+    RoundPeg *roundPeg;
 
 public:
-    void newMethod() override
+    SquarePegAdapter(RoundPeg *peg)
     {
-        // 在新接口中调用旧类的方法
-        old.oldMethod();
+        roundPeg = peg;
+    }
+
+    void insertIntoHole()
+    {
+        roundPeg->insertIntoHole();
     }
 };
 
 int main()
 {
-    // 使用适配器将旧类适配到新接口
-    NewInterface *adapter = new Adapter;
-    adapter->newMethod();
+    RoundPeg *roundPeg = new RoundPeg();
+    SquarePeg *squarePeg = new SquarePegAdapter(roundPeg);
+    squarePeg->insertIntoHole();
 
-    delete adapter;
+    delete roundPeg;
+    delete squarePeg;
 
     return 0;
 }
