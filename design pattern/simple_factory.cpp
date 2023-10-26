@@ -1,46 +1,51 @@
 #include <iostream>
+#include <string>
+
 using namespace std;
 
-// 基类
-class Animal
+// 抽象产品类
+class Product
 {
 public:
-    virtual void speak() = 0;
+    virtual void use() = 0;
 };
 
-// 具体类1
-class Dog : public Animal
+// 具体产品类A
+class ConcreteProductA : public Product
 {
 public:
-    void speak() override
+    void use() override
     {
-        cout << "汪汪汪!" << endl;
+        cout << "Using ConcreteProductA" << endl;
     }
 };
 
-// 具体类2
-class Cat : public Animal
+// 具体产品类B
+class ConcreteProductB : public Product
 {
 public:
-    void speak() override
+    void use() override
     {
-        cout << "喵喵喵!" << endl;
+        cout << "Using ConcreteProductB" << endl;
     }
 };
 
-// 工厂类
-class AnimalFactory
+// 简单工厂类
+class SimpleFactory
 {
 public:
-    Animal *createAnimal(int choice)
+    Product *createProduct(string type)
     {
-        switch (choice)
+        if (type == "A")
         {
-        case 1:
-            return new Dog();
-        case 2:
-            return new Cat();
-        default:
+            return new ConcreteProductA();
+        }
+        else if (type == "B")
+        {
+            return new ConcreteProductB();
+        }
+        else
+        {
             return nullptr;
         }
     }
@@ -48,13 +53,12 @@ public:
 
 int main()
 {
-    AnimalFactory factory;
-
-    Animal *pet1 = factory.createAnimal(1);
-    pet1->speak();
-
-    Animal *pet2 = factory.createAnimal(2);
-    pet2->speak();
-
+    SimpleFactory factory;
+    Product *productA = factory.createProduct("A");
+    Product *productB = factory.createProduct("B");
+    productA->use();
+    productB->use();
+    delete productA;
+    delete productB;
     return 0;
 }
