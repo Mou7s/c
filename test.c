@@ -1,100 +1,61 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// 定义链表节点结构体
-struct Node
+void shellSort(int data[], int n)
 {
-    int data;
-    struct Node *next;
-};
+    int *delta, k, i, t, dk, j;
+    k = n;
+    delta = (int *)malloc(sizeof(int) * n / 2);
 
-// 定义链表头指针
-struct Node *head = NULL;
-
-// 插入节点到链表尾部
-void insert(int data)
-{
-    // 创建新节点
-    struct Node *newNode = (struct Node *)malloc(sizeof(struct Node));
-    newNode->data = data;
-    newNode->next = NULL;
-
-    // 如果链表为空，将新节点作为头节点
-    if (head == NULL)
+    i = 0;
+    do
     {
-        head = newNode;
-        return;
+        k /= 2;
+        delta[i++] = k;
+
+    } while (k > 1);
+
+    i = 0;
+
+    while ((dk = delta[i]) > 0)
+    {
+        for (k = dk; k < n; k++)
+        {
+            if (data[k] < data[k - dk])
+            {
+                t = data[k];
+                for (j = k - dk; j >= 0 && t < data[j]; j -= dk)
+                {
+                    data[j + dk] = data[j];
+                }
+                data[j + dk] = t;
+            }
+        }
+        i++;
     }
 
-    // 找到链表尾部，将新节点插入到尾部
-    struct Node *current = head;
-    while (current->next != NULL)
-    {
-        current = current->next;
-    }
-    current->next = newNode;
-}
-
-// 删除指定节点
-void delete(int data)
-{
-    // 如果链表为空，直接返回
-    if (head == NULL)
-    {
-        return;
-    }
-
-    // 如果要删除的节点是头节点，直接将头指针指向下一个节点
-    if (head->data == data)
-    {
-        head = head->next;
-        return;
-    }
-
-    // 找到要删除的节点的前一个节点
-    struct Node *current = head;
-    while (current->next != NULL && current->next->data != data)
-    {
-        current = current->next;
-    }
-
-    // 如果找到了要删除的节点，将前一个节点的next指针指向要删除节点的下一个节点
-    if (current->next != NULL)
-    {
-        current->next = current->next->next;
-    }
-}
-
-// 打印链表
-void printList()
-{
-    struct Node *current = head;
-    while (current != NULL)
-    {
-        printf("%d ", current->data);
-        current = current->next;
-    }
-    printf("\n");
+    free(delta);
 }
 
 int main()
 {
-    // 插入节点
-    insert(1);
-    insert(2);
-    insert(3);
-    insert(4);
+    int data[] = {12, 34, 54, 2, 3, 4, 6, 8};
+    int n = sizeof(data) / sizeof(data[0]);
 
-    // 打印链表
-    printf("链表：");
-    printList();
+    printf("Array before sorting: \n");
+    for (int i = 0; i < n; i++)
+    {
+        printf("%d ", data[i]);
+    }
 
-    // 删除节点
-    delete (3);
+    shellSort(data, n);
 
-    // 打印链表
-    printf("删除节点后的链表：");
-    printList();
+    printf("\nArray after sorting: \n");
+    for (int i = 0; i < n; i++)
+    {
+        printf("%d ", data[i]);
+    }
+    printf("\n");
 
     return 0;
 }
