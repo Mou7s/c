@@ -1,43 +1,40 @@
 #include <iostream>
 
-// 新接口
-class NewInterface
-{
-public:
-    virtual void newMethod() = 0;
-    virtual ~NewInterface() {}
-};
-
-// 旧接口
-class OldInterface
+// 旧的类
+class OldLibrary
 {
 public:
     void oldMethod()
     {
-        std::cout << "Old Method" << std::endl;
+        std::cout << "Old method is called." << std::endl;
     }
 };
 
-// 适配器类
+// 新的接口
+class NewInterface
+{
+public:
+    virtual void newMethod() = 0;
+};
+
+// 适配器类，继承新接口并包含旧类的实例
 class Adapter : public NewInterface
 {
 private:
-    OldInterface oldObject;
+    OldLibrary old;
 
 public:
-    Adapter(OldInterface old) : oldObject(old) {}
-
     void newMethod() override
     {
-        oldObject.oldMethod();
+        // 在新接口中调用旧类的方法
+        old.oldMethod();
     }
 };
 
 int main()
 {
-    OldInterface oldObj;
-    NewInterface *adapter = new Adapter(oldObj);
-
+    // 使用适配器将旧类适配到新接口
+    NewInterface *adapter = new Adapter;
     adapter->newMethod();
 
     delete adapter;
