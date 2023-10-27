@@ -1,46 +1,50 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-/**
- * 希尔排序
- * @param data 待排序数组
- * @param n 数组长度
- */
-void shellSort(int data[], int n)
+void bucketSort(float *data, int size)
 {
-    int i, j, gap, temp;
-
-    for (gap = n / 2; gap > 0; gap /= 2)
+    // 创建桶并初始化为0
+    const int BUCKET_SIZE = 10;
+    int bucket[BUCKET_SIZE];
+    for (int i = 0; i < BUCKET_SIZE; i++)
     {
-        for (i = gap; i < n; i++)
+        bucket[i] = 0;
+    }
+
+    // 将数据分配到桶中
+    for (int i = 0; i < size; i++)
+    {
+        int index = (int)(data[i] * BUCKET_SIZE);
+        bucket[index]++;
+    }
+
+    // 对每个桶中的数据进行排序
+    for (int i = 0; i < BUCKET_SIZE; i++)
+    {
+        for (int j = 0; j < bucket[i]; j++)
         {
-            temp = data[i];
-            for (j = i - gap; j >= 0 && data[j] > temp; j -= gap)
-            {
-                data[j + gap] = data[j];
-            }
-            data[j + gap] = temp;
+            printf("%d ", i);
         }
     }
 }
 
 int main()
 {
-    int data[] = {6, 4, 8, 2};
-    int n = sizeof(data) / sizeof(data[0]);
+    float data[] = {0.6, 0.4, 0.8, 0.2};
+    int size = sizeof(data) / sizeof(data[0]);
 
     printf("Array before sorting: \n");
-    for (int i = 0; i < n; i++)
+    for (int i = 0; i < size; i++)
     {
-        printf("%d ", data[i]);
+        printf("%f ", data[i]);
     }
 
-    shellSort(data, n);
+    bucketSort(data, size);
 
     printf("\nArray after sorting: \n");
-    for (int i = 0; i < n; i++)
+    for (int i = 0; i < size; i++)
     {
-        printf("%d ", data[i]);
+        printf("%f ", data[i]);
     }
     printf("\n");
 
