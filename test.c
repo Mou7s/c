@@ -1,35 +1,25 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+/**
+ * 希尔排序
+ * @param data 待排序数组
+ * @param n 数组长度
+ */
 void shellSort(int data[], int n)
 {
-    int *delta, k, i, t, dk, j;
-    k = n;
-    delta = (int *)malloc(sizeof(int) * (n / 2));
-
-    i = 0;
-
-    do
+    int i, j, gap, temp;
+    for (gap = n / 2; gap > 0; gap /= 2)
     {
-        k = k / 2;
-        delta[i] = k;
-        i++;
-    } while (k > 1);
-
-    i = 0;
-    while ((dk = delta[i]) > 0)
-    {
-        for (k = dk; k < n; ++k)
+        for (i = gap; i < n; i++)
         {
-            if (data[k] < data[k - dk])
+            temp = data[i];
+            for (j = i; j >= gap && data[j - gap] > temp; j -= gap)
             {
-                t = data[k];
-                for (j = k - dk; j >= 0 && t < data[j]; j -= dk)
-                    data[j + dk] = data[j];
-                data[j + dk] = t;
+                data[j] = data[j - gap];
             }
+            data[j] = temp;
         }
-        i++;
     }
 }
 
