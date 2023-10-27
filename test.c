@@ -1,52 +1,33 @@
+// 汉诺塔问题
 #include <stdio.h>
 #include <stdlib.h>
 
-void bucketSort(float *data, int size)
+void move(char x, char y)
 {
-    // 创建桶并初始化为0
-    const int BUCKET_SIZE = 10;
-    int bucket[BUCKET_SIZE];
-    for (int i = 0; i < BUCKET_SIZE; i++)
-    {
-        bucket[i] = 0;
-    }
+    printf("%c-->%c\n", x, y);
+}
 
-    // 将数据分配到桶中
-    for (int i = 0; i < size; i++)
+void hanoi(int n, char one, char two, char three)
+{
+    if (n == 1)
     {
-        int index = (int)(data[i] * BUCKET_SIZE);
-        bucket[index]++;
+        move(one, three);
     }
-
-    // 对每个桶中的数据进行排序
-    for (int i = 0; i < BUCKET_SIZE; i++)
+    else
     {
-        for (int j = 0; j < bucket[i]; j++)
-        {
-            printf("%d ", i);
-        }
+        hanoi(n - 1, one, three, two);
+        move(one, three);
+        hanoi(n - 1, two, one, three);
     }
 }
 
 int main()
 {
-    float data[] = {0.6, 0.4, 0.8, 0.2};
-    int size = sizeof(data) / sizeof(data[0]);
-
-    printf("Array before sorting: \n");
-    for (int i = 0; i < size; i++)
-    {
-        printf("%f ", data[i]);
-    }
-
-    bucketSort(data, size);
-
-    printf("\nArray after sorting: \n");
-    for (int i = 0; i < size; i++)
-    {
-        printf("%f ", data[i]);
-    }
-    printf("\n");
-
+    int m;
+    printf("input the number of diskes:");
+    scanf("%d", &m);
+    printf("the step to moving %d diskes:\n", m);
+    hanoi(m, 'A', 'B', 'C');
+    system("pause");
     return 0;
 }
