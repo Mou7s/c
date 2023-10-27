@@ -5,36 +5,32 @@ void shellSort(int data[], int n)
 {
     int *delta, k, i, t, dk, j;
     k = n;
-    delta = (int *)malloc(sizeof(int) * n / 2);
+    delta = (int *)malloc(sizeof(int) * (n / 2));
 
     i = 0;
+
     do
     {
-        k /= 2;
-        delta[i++] = k;
-
+        k = k / 2;
+        delta[i] = k;
+        i++;
     } while (k > 1);
 
     i = 0;
-
     while ((dk = delta[i]) > 0)
     {
-        for (k = dk; k < n; k++)
+        for (k = dk; k < n; ++k)
         {
             if (data[k] < data[k - dk])
             {
                 t = data[k];
                 for (j = k - dk; j >= 0 && t < data[j]; j -= dk)
-                {
                     data[j + dk] = data[j];
-                }
                 data[j + dk] = t;
             }
         }
         i++;
     }
-
-    free(delta);
 }
 
 int main()
