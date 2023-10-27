@@ -9,23 +9,24 @@
 void shellSort(int data[], int n)
 {
     int i, j, gap, temp;
+
     for (gap = n / 2; gap > 0; gap /= 2)
     {
         for (i = gap; i < n; i++)
         {
             temp = data[i];
-            for (j = i; j >= gap && data[j - gap] > temp; j -= gap)
+            for (j = i - gap; j >= 0 && data[j] > temp; j -= gap)
             {
-                data[j] = data[j - gap];
+                data[j + gap] = data[j];
             }
-            data[j] = temp;
+            data[j + gap] = temp;
         }
     }
 }
 
 int main()
 {
-    int data[] = {12, 34, 54, 2, 3, 4, 6, 8};
+    int data[] = {6, 4, 8, 2};
     int n = sizeof(data) / sizeof(data[0]);
 
     printf("Array before sorting: \n");
