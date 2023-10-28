@@ -1,66 +1,81 @@
 #include <iostream>
+#include <vector>
 #include <string>
 using namespace std;
 
-const int ESPRESSO_PRICE = 25;
-const int DARKROAST_PRICE = 20;
-const int MOCHA_PRICE = 10;
-const int WHIP_PRICE = 8;
+class Observer
+{
+public:
+    virtual void update() = 0;
+};
 
-class Beverage
+class Subject
 {
 protected:
-    string description;
+    vector<Observer *> myObs;
 
 public:
-    virtual string getDescription() { return description; }
-    virtual int cost() = 0;
+    virtual void Attach(Observer *obs) { myObs.push_back(obs); }
+    virtual void Detach(Observer *obs)
+    {
+        for (vector<Observer *>::iterator iter = myObs.begin(); iter != myObs.end(); iter++)
+        {
+            if (*iter == obs)
+            {
+                myObs.erase(iter);
+                return;
+            }
+        }
+    }
+    virtual void Notify()
+    {
+        for (vector<Observer *>::iterator iter = myObs.begin(); iter != myObs.end(); iter++)
+        {
+            (*iter)->update();
+        }
+    }
+    virtual int getStatus() = 0;
+    virtual void setStatus(int status) = 0;
 };
 
-class CondimentDecorator : public Beverage
+class OfficeDoc : public Subject
 {
-protected:
-    Beverage *beverage;
+private:
+    string mySubjectName;
+    int m_status;
 
 public:
-    virtual string getDescription() = 0;
+    OfficeDoc(string name) : mySubjectName(name), m_status(0) {}
+    void setStatus(int status) { m_status = status; }
+    int getStatus() { return m_status; }
 };
 
-class Espresso : public Beverage
+class DocExplorer : public Observer
 {
-public:
-    Espresso() { description = "Espresso"; }
-    int cost() { return ESPRESSO_PRICE; }
-};
+private:
+    string myObsName;
+    Subject *mySubject;
 
-class DarkRoast : public Beverage
-{
 public:
-    DarkRoast() { description = "DarkRoast"; }
-    int cost() { return DARKROAST_PRICE; }
-};
-
-class Mocha : public CondimentDecorator
-{
-public:
-    Mocha(Beverage *beverage) { this->beverage = beverage; }
-    string getDescription() { return beverage->getDescription() + ", Mocha"; }
-    int cost() { return MOCHA_PRICE + beverage->cost(); }
-};
-
-class Whip : public CondimentDecorator
-{
-public:
-    Whip(Beverage *beverage) { this->beverage = beverage; }
-    string getDescription() { return beverage->getDescription() + ", Whip"; }
-    int cost() { return WHIP_PRICE + beverage->cost(); }
+    DocExplorer(string name, Subject *sub) : myObsName(name), mySubject(sub)
+    {
+        mySubject->Attach(this);
+    }
+    ~DocExplorer()
+    {
+        mySubject->Detach(this);
+    }
+    void update() override
+    {
+        cout << "update observer: " << myObsName << endl;
+    }
 };
 
 int main()
 {
-    Beverage *beverage = new DarkRoast();
-    beverage = new Mocha(beverage);
-    beverage = new Whip(beverage);
-    cout << beverage->getDescription() << " ￥" << beverage->cost() << endl;
+    Subject *subjectA = new OfficeDoc("subject A");
+    Observer *observerA = new DocExplorer("observer A", subjectA);
+    subjectA->setStatus(1);
+    subjectA->Notify();
     return 0;
 }
