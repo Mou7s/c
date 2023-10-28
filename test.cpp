@@ -1,109 +1,66 @@
 #include <iostream>
+#include <string>
 using namespace std;
 
-class FlyBehavior
-{
-public:
-    virtual void fly() = 0;
-};
+const int ESPRESSO_PRICE = 25;
+const int DARKROAST_PRICE = 20;
+const int MOCHA_PRICE = 10;
+const int WHIP_PRICE = 8;
 
-class QuackBehavior
-{
-public:
-    virtual void quack() = 0;
-};
-
-class FlyWithWings : public FlyBehavior
-{
-public:
-    void fly() { cout << "使用翅膀飞行!" << endl; }
-};
-
-class FlyNoWay : public FlyBehavior
-{
-public:
-    void fly() { cout << "不能飞行!" << endl; }
-};
-
-class Quack : public QuackBehavior
-{
-public:
-    void quack() { cout << "发出'嘎嘎'声!" << endl; }
-};
-
-class Squeak : public QuackBehavior
-{
-public:
-    void quack() { cout << "发出空气与橡皮摩擦声!" << endl; }
-};
-
-class QuackNoWay : public QuackBehavior
-{
-public:
-    void quack() { cout << "不能发声!" << endl; }
-};
-
-class Duck
+class Beverage
 {
 protected:
-    FlyBehavior *flyBehavior;
-    QuackBehavior *quackBehavior;
+    string description;
 
 public:
-    void fly() { flyBehavior->fly(); }
-    void quack() { quackBehavior->quack(); };
-    virtual void display() = 0;
+    virtual string getDescription() { return description; }
+    virtual int cost() = 0;
 };
 
-class RubberDuck : public Duck
+class CondimentDecorator : public Beverage
 {
+protected:
+    Beverage *beverage;
+
 public:
-    RubberDuck()
-    {
-        flyBehavior = new FlyNoWay();
-        quackBehavior = new Squeak();
-    }
-    ~RubberDuck()
-    {
-        if (flyBehavior)
-            delete flyBehavior;
-        if (quackBehavior)
-            delete quackBehavior;
-    }
-    void display()
-    { /*此处省略显示橡皮鸭的代码*/
-    }
+    virtual string getDescription() = 0;
 };
 
-class MallardDuck : public Duck
+class Espresso : public Beverage
 {
 public:
-    MallardDuck()
-    {
-        flyBehavior = new FlyWithWings();
-        quackBehavior = new Quack();
-    }
-    ~MallardDuck()
-    {
-        if (flyBehavior)
-            delete flyBehavior;
-        if (quackBehavior)
-            delete quackBehavior;
-    }
-    void display()
-    { /*此处省略显示绿头鸭的代码*/
-    }
+    Espresso() { description = "Espresso"; }
+    int cost() { return ESPRESSO_PRICE; }
+};
+
+class DarkRoast : public Beverage
+{
+public:
+    DarkRoast() { description = "DarkRoast"; }
+    int cost() { return DARKROAST_PRICE; }
+};
+
+class Mocha : public CondimentDecorator
+{
+public:
+    Mocha(Beverage *beverage) { this->beverage = beverage; }
+    string getDescription() { return beverage->getDescription() + ", Mocha"; }
+    int cost() { return MOCHA_PRICE + beverage->cost(); }
+};
+
+class Whip : public CondimentDecorator
+{
+public:
+    Whip(Beverage *beverage) { this->beverage = beverage; }
+    string getDescription() { return beverage->getDescription() + ", Whip"; }
+    int cost() { return WHIP_PRICE + beverage->cost(); }
 };
 
 int main()
 {
-    Duck *duck = new MallardDuck();
-    duck->fly();
-    duck->quack();
-    delete duck;
-    duck = new RubberDuck();
-    duck->fly();
-    duck->quack();
-    delete duck;
+    Beverage *beverage = new DarkRoast();
+    beverage = new Mocha(beverage);
+    beverage = new Whip(beverage);
+    cout << beverage->getDescription() << " ￥" << beverage->cost() << endl;
     return 0;
 }
