@@ -1,36 +1,103 @@
 #include <iostream>
+#include <string>
 using namespace std;
 
-class printData
+class Light
 {
 public:
-    void print(int i)
+    Light(string name)
     {
-        cout << "整数为: " << i << endl;
+        // 代码省略
     }
-
-    void print(double f)
+    void on()
     {
-        cout << "浮点数为: " << f << endl;
+        // 代码省略
     }
-
-    void print(char c[])
+    void off()
     {
-        cout << "字符串为: " << c << endl;
+        // 代码省略
     }
 };
 
-int main(void)
+class Command
 {
-    printData pd;
+public:
+    virtual void execute() = 0;
+};
 
-    // 输出整数
-    pd.print(5);
-    // 输出浮点数
-    pd.print(500.263);
-    // 输出字符串
-    char c[] = "Hello C++";
-    pd.print(c);
+class LightOnCommand : public Command
+{ // 开灯命令
+private:
+    Light *light;
 
+public:
+    LightOnCommand(Light *light)
+    {
+        this->light = light;
+    }
+    void execute()
+    {
+        light->on();
+    }
+};
+
+class LightOffCommand : public Command
+{ // 关灯命令
+private:
+    Light *light;
+
+public:
+    LightOffCommand(Light *light)
+    {
+        this->light = light;
+    }
+    void execute()
+    {
+        light->off();
+    }
+};
+
+class RemoteControl
+{ // 遥控器
+private:
+    Command *onCommands[7];
+    Command *offCommands[7];
+
+public:
+    RemoteControl()
+    {
+        // 代码省略
+    }
+    void setCommand(int slot, Command *onCommand, Command *offCommand)
+    {
+        onCommands[slot] = onCommand;
+        offCommands[slot] = offCommand;
+    }
+    void onButtonWasPushed(int slot)
+    {
+        onCommands[slot]->execute();
+    }
+    void offButtonWasPushed(int slot)
+    {
+        offCommands[slot]->execute();
+    }
+};
+
+int main()
+{
+    RemoteControl *remoteControl = new RemoteControl();
+    Light *livingRoomLight = new Light("Living Room");
+    Light *kitchenLight = new Light("Kitchen");
+    LightOnCommand *livingRoomLightOn = new LightOnCommand(livingRoomLight);
+    LightOffCommand *livingRoomLightOff = new LightOffCommand(livingRoomLight);
+    LightOnCommand *kitchenLightOn = new LightOnCommand(kitchenLight);
+    LightOffCommand *kitchenLightOff = new LightOffCommand(kitchenLight);
+    remoteControl->setCommand(0, livingRoomLightOn, livingRoomLightOff);
+    remoteControl->setCommand(1, kitchenLightOn, kitchenLightOff);
+    remoteControl->onButtonWasPushed(0);
+    remoteControl->offButtonWasPushed(0);
+    remoteControl->onButtonWasPushed(1);
+    remoteControl->offButtonWasPushed(1);
+    // 其余代码省略
     return 0;
 }
