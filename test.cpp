@@ -1,50 +1,36 @@
 #include <iostream>
-
 using namespace std;
 
-class Box
+class printData
 {
 public:
-    static int objectCount;
-    // 构造函数定义
-    Box(double l = 2.0, double b = 2.0, double h = 2.0)
+    void print(int i)
     {
-        cout << "Constructor called." << endl;
-        length = l;
-        breadth = b;
-        height = h;
-        // 每次创建对象时增加 1
-        objectCount++;
-    }
-    double Volume()
-    {
-        return length * breadth * height;
-    }
-    static int getCount()
-    {
-        return objectCount;
+        cout << "整数为: " << i << endl;
     }
 
-private:
-    double length;  // 长度
-    double breadth; // 宽度
-    double height;  // 高度
+    void print(double f)
+    {
+        cout << "浮点数为: " << f << endl;
+    }
+
+    void print(char c[])
+    {
+        cout << "字符串为: " << c << endl;
+    }
 };
-
-// 初始化类 Box 的静态成员
-int Box::objectCount = 0;
 
 int main(void)
 {
+    printData pd;
 
-    // 在创建对象之前输出对象的总数
-    cout << "Inital Stage Count: " << Box::getCount() << endl;
-
-    Box Box1(3.3, 1.2, 1.5); // 声明 box1
-    Box Box2(8.5, 6.0, 2.0); // 声明 box2
-
-    // 在创建对象之后输出对象的总数
-    cout << "Final Stage Count: " << Box::getCount() << endl;
+    // 输出整数
+    pd.print(5);
+    // 输出浮点数
+    pd.print(500.263);
+    // 输出字符串
+    char c[] = "Hello C++";
+    pd.print(c);
 
     return 0;
 }
