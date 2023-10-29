@@ -1,81 +1,45 @@
 #include <iostream>
-#include <vector>
-#include <string>
+
 using namespace std;
 
-class Observer
+class Box
 {
 public:
-    virtual void update() = 0;
-};
-
-class Subject
-{
-protected:
-    vector<Observer *> myObs;
-
-public:
-    virtual void Attach(Observer *obs) { myObs.push_back(obs); }
-    virtual void Detach(Observer *obs)
+    // 构造函数定义
+    Box(double l = 2.0, double b = 2.0, double h = 2.0)
     {
-        for (vector<Observer *>::iterator iter = myObs.begin(); iter != myObs.end(); iter++)
-        {
-            if (*iter == obs)
-            {
-                myObs.erase(iter);
-                return;
-            }
-        }
+        cout << "调用构造函数。" << endl;
+        length = l;
+        breadth = b;
+        height = h;
     }
-    virtual void Notify()
+    double Volume()
     {
-        for (vector<Observer *>::iterator iter = myObs.begin(); iter != myObs.end(); iter++)
-        {
-            (*iter)->update();
-        }
+        return length * breadth * height;
     }
-    virtual int getStatus() = 0;
-    virtual void setStatus(int status) = 0;
-};
+    int compare(Box box)
+    {
+        return this->Volume() > box.Volume();
+    }
 
-class OfficeDoc : public Subject
-{
 private:
-    string mySubjectName;
-    int m_status;
-
-public:
-    OfficeDoc(string name) : mySubjectName(name), m_status(0) {}
-    void setStatus(int status) { m_status = status; }
-    int getStatus() { return m_status; }
+    double length;  // 宽度
+    double breadth; // 长度
+    double height;  // 高度
 };
 
-class DocExplorer : public Observer
+int main(void)
 {
-private:
-    string myObsName;
-    Subject *mySubject;
+    Box Box1(3.3, 1.2, 1.5); // 声明 box1
+    Box Box2(8.5, 6.0, 2.0); // 声明 box2
 
-public:
-    DocExplorer(string name, Subject *sub) : myObsName(name), mySubject(sub)
+    if (Box1.compare(Box2))
     {
-        mySubject->Attach(this);
+        cout << "Box2 的体积比 Box1 小" << endl;
     }
-    ~DocExplorer()
+    else
     {
-        mySubject->Detach(this);
+        cout << "Box2 的体积大于或等于 Box1" << endl;
     }
-    void update() override
-    {
-        cout << "update observer: " << myObsName << endl;
-    }
-};
-
-int main()
-{
-    Subject *subjectA = new OfficeDoc("subject A");
-    Observer *observerA = new DocExplorer("observer A", subjectA);
-    subjectA->setStatus(1);
-    subjectA->Notify();
     return 0;
 }
