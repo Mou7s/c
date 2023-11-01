@@ -1,33 +1,25 @@
 #include <iostream>
+using namespace std;
 
-class Singleton
+void print(int num)
 {
-private:
-    static Singleton *instance;
-    Singleton() {} // 私有化构造函数
+    cout << "Printing integer: " << num << endl;
+}
 
-public:
-    static Singleton *getInstance()
-    {
-        if (instance == nullptr)
-        {
-            instance = new Singleton();
-        }
-        return instance;
-    }
+void print(double num)
+{
+    cout << "Printing double: " << num << endl;
+}
 
-    void display()
-    {
-        std::cout << "Singleton instance" << std::endl;
-    }
-};
-
-// 初始化静态成员变量
-Singleton *Singleton::instance = nullptr;
+void print(char *str)
+{
+    cout << "Printing string: " << str << endl;
+}
 
 int main()
 {
-    // 获取 Singleton 实例并调用 display 方法
-    Singleton::getInstance()->display();
+    print(5);
+    print(3.14);
+    print("Hello World");
     return 0;
 }
