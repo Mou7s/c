@@ -1,25 +1,104 @@
+// 策略模式，不同的促销模式
+
 #include <iostream>
 using namespace std;
-
-void print(int num)
+enum TYPE
 {
-    cout << "Printing integer: " << num << endl;
-}
+    NORMAL,
+    CASH_DISCOUNT,
+    CASH_RETURN
+};
 
-void print(double num)
+class CashSuper
 {
-    cout << "Printing double: " << num << endl;
-}
+public:
+    virtual double acceptCash(double money) = 0;
+};
 
-void print(char *str)
+class CashNormal : public CashSuper
 {
-    cout << "Printing string: " << str << endl;
-}
+public:
+    double acceptCash(double money)
+    {
+        return money;
+    }
+};
+
+class CashDiscount : public CashSuper
+{
+private:
+    double moneyDiscount; // 折扣
+public:
+    CashDiscount(double discount)
+    {
+        moneyDiscount = discount;
+    }
+
+    double acceptCash(double money)
+    {
+        return money * moneyDiscount;
+    };
+};
+
+class CashReturn : public CashSuper
+{
+private:
+    double moneyCondition; // 满多少
+    double moneyReturn;    // 返多少
+public:
+    CashReturn(double condition, double moneyReturn)
+    {
+        this->moneyCondition = condition;
+        this->moneyReturn = moneyReturn;
+    };
+
+    double acceptCash(double money)
+    {
+        double result = money;
+        if (money >= moneyCondition)
+        {
+            result = money - (int)(money / moneyCondition) * moneyReturn;
+        }
+        return result;
+    };
+};
+
+class CashContext
+{
+
+private:
+    CashSuper *cs;
+
+public:
+    CashContext(TYPE type)
+    {
+        switch (type)
+        {
+        case NORMAL:
+            cs = new CashNormal();
+            break;
+        case CASH_RETURN:
+            cs = new CashReturn(300, 100);
+            break;
+        case CASH_DISCOUNT:
+            cs = new CashDiscount(0.8);
+            break;
+
+        default:
+            break;
+        }
+    };
+
+    double getResult(double money)
+    {
+        return cs->acceptCash(money);
+    };
+};
 
 int main()
 {
-    print(5);
-    print(3.14);
-    print("Hello World");
+    CashContext *cc = new CashContext(CASH_RETURN);
+    double result = cc->getResult(1000);
+    cout << result << endl;
     return 0;
 }
