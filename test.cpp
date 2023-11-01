@@ -1,104 +1,66 @@
-// 策略模式，不同的促销模式
-
+// 装饰器模式
 #include <iostream>
-using namespace std;
-enum TYPE
-{
-    NORMAL,
-    CASH_DISCOUNT,
-    CASH_RETURN
-};
 
-class CashSuper
+// Component Interface
+class Component
 {
 public:
-    virtual double acceptCash(double money) = 0;
+    virtual void operation() = 0;
 };
 
-class CashNormal : public CashSuper
+// Concrete Component
+class ConcreteComponent : public Component
 {
 public:
-    double acceptCash(double money)
+    void operation() override
     {
-        return money;
+        std::cout << "ConcreteComponent operation\n";
     }
 };
 
-class CashDiscount : public CashSuper
+// Base Decorator
+class Decorator : public Component
 {
-private:
-    double moneyDiscount; // 折扣
+protected:
+    Component *component;
+
 public:
-    CashDiscount(double discount)
+    Decorator(Component *c) : component(c) {}
+    void operation() override
     {
-        moneyDiscount = discount;
+        if (component)
+            component->operation();
     }
-
-    double acceptCash(double money)
-    {
-        return money * moneyDiscount;
-    };
 };
 
-class CashReturn : public CashSuper
+// Concrete Decorators
+class ConcreteDecoratorA : public Decorator
 {
-private:
-    double moneyCondition; // 满多少
-    double moneyReturn;    // 返多少
 public:
-    CashReturn(double condition, double moneyReturn)
+    ConcreteDecoratorA(Component *c) : Decorator(c) {}
+    void operation() override
     {
-        this->moneyCondition = condition;
-        this->moneyReturn = moneyReturn;
-    };
-
-    double acceptCash(double money)
-    {
-        double result = money;
-        if (money >= moneyCondition)
-        {
-            result = money - (int)(money / moneyCondition) * moneyReturn;
-        }
-        return result;
-    };
+        Decorator::operation();
+        std::cout << "ConcreteDecoratorA operation\n";
+    }
 };
 
-class CashContext
+class ConcreteDecoratorB : public Decorator
 {
-
-private:
-    CashSuper *cs;
-
 public:
-    CashContext(TYPE type)
+    ConcreteDecoratorB(Component *c) : Decorator(c) {}
+    void operation() override
     {
-        switch (type)
-        {
-        case NORMAL:
-            cs = new CashNormal();
-            break;
-        case CASH_RETURN:
-            cs = new CashReturn(300, 100);
-            break;
-        case CASH_DISCOUNT:
-            cs = new CashDiscount(0.8);
-            break;
-
-        default:
-            break;
-        }
-    };
-
-    double getResult(double money)
-    {
-        return cs->acceptCash(money);
-    };
+        Decorator::operation();
+        std::cout << "ConcreteDecoratorB operation\n";
+    }
 };
 
 int main()
 {
-    CashContext *cc = new CashContext(CASH_RETURN);
-    double result = cc->getResult(1000);
-    cout << result << endl;
+    ConcreteComponent cc;
+    ConcreteDecoratorA da(&cc);
+    ConcreteDecoratorB db(&da);
+    db.operation();
     return 0;
 }

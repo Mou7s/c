@@ -1,45 +1,65 @@
+// 实现kmp算法
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
-int longest_common_substring(char *s1, char *s2)
+int *getNext(char *p) // 求模式串p的next函数值并存入数组next
 {
-    int len1 = strlen(s1);
-    int len2 = strlen(s2);
-    int dp[len1 + 1][len2 + 1];
-    int max_len = 0;
-
-    for (int i = 0; i <= len1; i++)
+    int len = strlen(p);
+    int *next = (int *)malloc(sizeof(int) * len);
+    next[0] = -1;       // next[0]初始化为-1，-1表示不存在相同的最大前缀和最大后缀
+    int k = -1;         // k初始化为-1
+    int j = 0;          // j初始化为0
+    while (j < len - 1) // 因为next[j]要表示p[0]到p[j-1]的字符串的最大相同前缀后缀长度，所以j最大取到len-1
     {
-        for (int j = 0; j <= len2; j++)
+        if (k == -1 || p[j] == p[k]) // p[j]表示后缀的单个字符，p[k]表示前缀的单个字符
         {
-            if (i == 0 || j == 0)
-            {
-                dp[i][j] = 0;
-            }
-            else if (s1[i - 1] == s2[j - 1])
-            {
-                dp[i][j] = dp[i - 1][j - 1] + 1;
-                if (dp[i][j] > max_len)
-                {
-                    max_len = dp[i][j];
-                }
-            }
-            else
-            {
-                dp[i][j] = 0;
-            }
+            ++k;
+            ++j;
+            next[j] = k;
+        }
+        else
+        {
+            k = next[k];
         }
     }
+    return next;
+}
 
-    return max_len;
+int kmp(char *s, char *p)
+{
+    int len1 = strlen(s);
+    int len2 = strlen(p);
+    int i = 0;
+    int j = 0;
+    int *next = getNext(p); // 获取next数组
+    while (i < len1 && j < len2)
+    {
+        if (j == -1 || s[i] == p[j])
+        {
+            ++i;
+            ++j;
+        }
+        else
+        {
+            j = next[j];
+        }
+    }
+    if (j == len2)
+    {
+        return i - j;
+    }
+    else
+    {
+        return -1;
+    }
 }
 
 int main()
 {
-    char s1[] = "hello world";
-    char s2[] = "world hello";
-    int len = longest_common_substring(s1, s2);
-    printf("The length of the longest common substring is %d\n", len);
-
+    char s[] = "ababababca";
+    char p[] = "abababca";
+    int pos = kmp(s, p);
+    printf("%d\n", pos);
     return 0;
 }
