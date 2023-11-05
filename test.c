@@ -15,6 +15,7 @@ void Heapify(int R[MAXITEM], int v, int n)
             j++;
         }
         if (R[0] < R[j])
+        {
             R[i] = R[j];
             i = j;
             j = 2 * i;
