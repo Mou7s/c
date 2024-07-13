@@ -1,18 +1,13 @@
+// sprintf例子
 #include <stdio.h>
-#include <string.h>
+#include <stdlib.h>
 
-char *strcpy(char *dest, const char *source)
+int main()
 {
-    char *ptr = dest;
-    while (*dest++ = *source++)
-        ;
-    return ptr;
-}
-
-int main(void)
-{
-    char str[25];
-    strcpy(str, "hello world");
+    char str[100];
+    int i = 10;
+    float x = 3.14;
+    sprintf(str, "i=%d, x=%f", i, x);
     printf("%s\n", str);
     return 0;
 }
