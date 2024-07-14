@@ -1,13 +1,24 @@
-// sprintf例子
+// struct 指针
+
 #include <stdio.h>
-#include <stdlib.h>
+
+struct turtle
+{
+    char *name;
+    char *species;
+    int age;
+};
+
+void happy(struct turtle *t)
+{
+    t->age = t->age + 1;
+    printf("%s is happy!\n", t->name);
+}
 
 int main()
 {
-    char str[100];
-    int i = 10;
-    float x = 3.14;
-    sprintf(str, "i=%d, x=%f", i, x);
-    printf("%s\n", str);
+    struct turtle myrtle = {"Myrtle", "Leatherback sea turtle", 99};
+    happy(&myrtle);
+    printf("%i\n", myrtle.age);
     return 0;
 }
