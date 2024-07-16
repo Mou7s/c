@@ -1,24 +1,12 @@
-// struct 指针
 
 #include <stdio.h>
-
-struct turtle
-{
-    char *name;
-    char *species;
-    int age;
-};
-
-void happy(struct turtle *t)
-{
-    t->age = t->age + 1;
-    printf("%s is happy!\n", t->name);
-}
+#include <math.h>
+#define QUADP(a, b, c) ((-(b) + sqrt((b) * (b) - 4 * (a) * (c))) / (2 * (a)))
+#define QUADM(a, b, c) ((-(b) - sqrt((b) * (b) - 4 * (a) * (c))) / (2 * (a)))
+#define QUAD(a, b, c) QUADP(a, b, c), QUADM(a, b, c)
 
 int main()
 {
-    struct turtle myrtle = {"Myrtle", "Leatherback sea turtle", 99};
-    happy(&myrtle);
-    printf("%i\n", myrtle.age);
+    printf("%f %f\n", QUAD(1, 2, 1));
     return 0;
 }
