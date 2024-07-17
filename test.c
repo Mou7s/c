@@ -1,12 +1,18 @@
-
 #include <stdio.h>
-#include <math.h>
-#define QUADP(a, b, c) ((-(b) + sqrt((b) * (b) - 4 * (a) * (c))) / (2 * (a)))
-#define QUADM(a, b, c) ((-(b) - sqrt((b) * (b) - 4 * (a) * (c))) / (2 * (a)))
-#define QUAD(a, b, c) QUADP(a, b, c), QUADM(a, b, c)
+#include <time.h>
+
+#define __DATE__ "July 23 2021"
+#define __TIME__ "16:45:00"
+#define __FILE__ "test.c"
+#define __LINE__ 4
+#define __STDC__ 1
 
 int main()
 {
-    printf("%f %f\n", QUAD(1, 2, 1));
+    printf("Date: %s\n", __DATE__);
+    printf("Time: %s\n", __TIME__);
+    printf("File: %s\n", __FILE__);
+    printf("Line: %d\n", __LINE__);
+    printf("STDC: %d\n", __STDC__);
     return 0;
 }
