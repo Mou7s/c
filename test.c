@@ -1,8 +1,20 @@
 #include <stdio.h>
 
-int main()
+int main(void)
 {
-    int year, month, day;
-    scanf("%d%*c%d%*c%d", &year, &month, &day);
-    printf("%d-%02d-%02d\n", year, month, day);
+    FILE *fp;
+    char c;
+
+    fp = fopen("hello.txt", "r");
+    if (fp == NULL)
+    {
+        return -1;
+    }
+
+    c = fgetc(fp);
+    printf("%c\n", c);
+
+    fclose(fp);
+
+    return 0;
 }
