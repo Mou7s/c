@@ -1,15 +1,18 @@
 #include <stdio.h>
+#include <stdlib.h>
 
-double inch2cm(double inch)
+typedef unsigned char *pointer;
+
+void show_bytes(pointer start, size_t len)
 {
-    return inch * 2.54;
+    size_t i;
+    for (i = 0; i < len; i++)
+        printf("%p\t0x%.2x\n", start + i, start[i]);
+    printf("\n");
 }
 
 int main()
 {
-    double inch;
-    printf("Please input the inch: ");
-    scanf("%lf", &inch);
-    printf("%lf inch is %lf cm\n", inch, inch2cm(inch));
-    return 0;
+    int a = 0x01234567;
+    show_bytes((pointer)&a, sizeof(int));
 }
