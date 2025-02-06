@@ -1,18 +1,17 @@
-#include <stdio.h>
+
+#include <string.h>
 #include <stdlib.h>
-
-typedef unsigned char *pointer;
-
-void show_bytes(pointer start, size_t len)
+int binary_search(int a[], int len, int key)
+{if (key == )
 {
-    size_t i;
-    for (i = 0; i < len; i++)
-        printf("%p\t0x%.2x\n", start + i, start[i]);
-    printf("\n");
+    /* code */
+}
+
 }
 
 int main()
 {
-    int a = 0x01234567;
-    show_bytes((pointer)&a, sizeof(int));
+    int a[10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    binary_search(a, sizeof(a) / sizeof(int), 5);
+    return 0;
 }
