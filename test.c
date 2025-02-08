@@ -1,17 +1,11 @@
-
-#include <string.h>
-#include <stdlib.h>
-int binary_search(int a[], int len, int key)
-{if (key == )
-{
-    /* code */
-}
-
-}
-
+// 有问题的版本
+#include <stdio.h>
 int main()
 {
-    int a[10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-    binary_search(a, sizeof(a) / sizeof(int), 5);
+    long long sum = 0.0f;
+    for (int i = 0; i < 10000; i++)
+        sum += i + 1;
+    printf("Sum: %lld\n", sum);
     return 0;
 }
+// 1 + 2 + 3 + … + 10000 = 10000 * (10000 + 1) / 2 = 50005000 ?
